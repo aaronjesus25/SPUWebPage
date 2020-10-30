@@ -3,11 +3,19 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Services;
+using BO.BussinesObject;
+using BO.MappingViewModel;
+using BO.ViewModel;
 
 namespace UsersManagement.Controllers
 {
     public class UsersController : Controller
     {
+        //objetos
+        private UserBO UserObject = new UserBO();
+        private readonly UserMap UserMap = new UserMap();
+
         // GET: Users
         public ActionResult Index()
         {
@@ -26,20 +34,24 @@ namespace UsersManagement.Controllers
             return View();
         }
 
+        //servicio solicitud lista de datos
+        [HttpGet]
+        public JsonResult GetList()
+        {
+            // TODO: Add insert logic here
+            var list = UserObject.GetList();
+
+            return Json(list, JsonRequestBehavior.AllowGet);
+                       
+        }
+
         // POST: Users/Create
         [HttpPost]
-        public ActionResult Create(FormCollection collection)
-        {
-            try
-            {
-                // TODO: Add insert logic here
-
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
+        public JsonResult Create(UserViewModel viewModel)
+        {          
+            // TODO: Add insert logic here
+            var respuesta = UserObject.Register(viewModel);
+            return Json(respuesta, JsonRequestBehavior.AllowGet);           
         }
 
         // GET: Users/Edit/5
