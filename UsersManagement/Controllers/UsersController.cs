@@ -34,15 +34,14 @@ namespace UsersManagement.Controllers
             return View();
         }
 
-        //servicio solicitud lista de datos
+        //Get: Users/GetList
         [HttpGet]
         public JsonResult GetList()
         {
             // TODO: Add insert logic here
             var list = UserObject.GetList();
 
-            return Json(list, JsonRequestBehavior.AllowGet);
-                       
+            return Json(list, JsonRequestBehavior.AllowGet);                      
         }
 
         // POST: Users/Create

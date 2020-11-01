@@ -29,3 +29,26 @@
         <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301867">Learn more &raquo;</a></p>
     </div>
 </div>
+
+@section Scripts {
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $.ajax({
+                type: 'GET',               
+                async: true,
+                url: '/Users/GetList',
+                beforeSend: function (xhr) {
+                    //codigo
+                }
+            }).done(function (data) {
+
+                console.log(data);
+
+            }).fail(function (data) {
+
+                console.log(data);
+            })
+        });
+    </script>
+}
+
