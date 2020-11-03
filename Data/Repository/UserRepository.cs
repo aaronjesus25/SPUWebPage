@@ -45,5 +45,14 @@ namespace Data.Repository
             users = DataBaseEntities.user.Where(w => w.RegStatus == true).ToList();
             return users;
         }
+
+        /// <summary>
+        ///     obtiene la lista de usuarios
+        /// </summary>
+        public user Login(string user, string password)
+        {           
+            user userEntity = DataBaseEntities.user.Where(w => w.RegStatus == true && w.Pass == password && w.Nick == user).FirstOrDefault();
+            return userEntity;
+        }
     }
 }

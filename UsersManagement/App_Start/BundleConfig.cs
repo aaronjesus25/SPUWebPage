@@ -25,6 +25,26 @@ namespace UsersManagement
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
                       "~/Content/site.css"));
+
+            //Jquery
+            bundles.Add(new ScriptBundle("~/bundles/jqueryjs").Include("~/Content/jquery2.1.3/jquery.min.js"));
+
+            //ControlsWeb>>js
+            bundles.Add(new ScriptBundle("~/bundles/controljs").Include(
+                "~/Content/bootstrap3.3.5/js/bootstrap.min.js",
+                "~/Content/noty2.3.7/packaged/jquery.noty.packaged.min.js",
+                "~/Content/dynatable0.3.1/jquery.dynatable.js",
+                "~/Content/jqueryvalidation/jquery-validate.min.js",
+                "~/Content/alertify0/js/alertify.js",
+                "~/Content/jalert3/jAlert-v3.min.js",
+                "~/Content/jalert3/jAlert-functions.min.js",
+                "~/Content/select1.7.4/js/bootstrap-select.js",
+                "~/Content/datepicker2.4.5/jquery.datetimepicker.full.js",
+                "~/Content/datepicker2.4.5/locale/es.js",
+                "~/Content/alertifyjs1.0.8/js/alertify.js",
+                "~/Content/spinner/spin.js",
+                 "~/Content/bootstrap-dropdown-hover/bootstrap-dropdownhover.js"
+                ));
         }
     }
 }

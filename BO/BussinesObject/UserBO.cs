@@ -83,5 +83,22 @@ namespace BO.BussinesObject
 
             return _result;
         }
+
+        //obtiene un usuario especificado
+        public UserViewModel Login(string user, string pass)
+        {
+            //variables
+            UserViewModel viewModel = null;
+
+            //obtengo el usuario activo
+            var result = UserRepository.Login(user, pass);
+            
+            if (result != null)
+            {
+                viewModel = UserMap.EntityToViewModel(result);
+            }
+
+            return viewModel;
+        }
     }
 }
