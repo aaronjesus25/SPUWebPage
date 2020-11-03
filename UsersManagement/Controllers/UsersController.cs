@@ -51,7 +51,7 @@ namespace UsersManagement.Controllers
         {          
             // TODO: Add insert logic here
             var respuesta = UserObject.Register(viewModel);
-            return Json(respuesta, JsonRequestBehavior.AllowGet);           
+            return Json(respuesta, JsonRequestBehavior.AllowGet);       
         }
 
         // GET: Users/Edit/5
