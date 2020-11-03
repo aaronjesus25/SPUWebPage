@@ -10,6 +10,7 @@ using BO.ViewModel;
 
 namespace UsersManagement.Controllers
 {
+    [Authorize]
     public class UsersController : Controller
     {
         //objetos
@@ -18,6 +19,12 @@ namespace UsersManagement.Controllers
 
         // GET: Users
         public ActionResult Index()
+        {
+            return View();
+        }
+
+        // GET: Users/SignIn
+        public ActionResult Register()
         {
             return View();
         }
@@ -46,11 +53,21 @@ namespace UsersManagement.Controllers
 
         // POST: Users/Create
         [HttpPost]
-        public JsonResult Create(UserViewModel viewModel)
-        {          
-            // TODO: Add insert logic here
-            var respuesta = UserObject.Register(viewModel);
-            return Json(respuesta, JsonRequestBehavior.AllowGet);           
+        public JsonResult SignIn(UserViewModel viewModel)
+        {
+            ResponseViewModel resp = new ResponseViewModel();
+
+            try
+            {
+                resp = UserObject.Register(viewModel);
+            }
+            catch (Exception ex)
+            {
+                resp.Success = false;
+                resp.Message = ex.Message;
+            }
+            
+            return Json(resp, JsonRequestBehavior.AllowGet);          
         }
 
         // GET: Users/Edit/5
