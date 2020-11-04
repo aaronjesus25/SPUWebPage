@@ -8,13 +8,18 @@ var band = false;
 
 //init
 $(document).ready(function () {
-    forms = new FormsQuro("show_hide_frame_table", "my-final-table", "frame_table", "form", "frame_form");
+    forms = new Forms("show_hide_frame_table", "my-final-table", "frame_table", "form", "frame_form");
     dynatable = $(idTable).dynatable().bind('dynatable:afterUpdate', SetChecked).data('dynatable');
     forms.Init();
     forms.HideForm();
     forms.ShowForm(true);//Enable
-    //forms.DeleteRowArray(forms.WebApiUrl + "Concept/DeleteConcept", List);
-    ValidateForm();
+    forms.DeleteRowArray("/Users/Delete", List);
+    $('#save').click(function (e) {
+        e.preventDefault();
+        isvalidform = true;
+        Save();
+    });
+
     band = false;
 
     List();    
@@ -33,22 +38,34 @@ function SelectedCheck() {
 
 //validar formulario
 function ValidateForm() {
+   
     $("#form").validate({
         rules: {
-            "Nombre": {
+            "Name": {
                 required: true,
                 minlength: 2,
                 maxlength: 100
+            },
+            "Nick": {
+                required: true,
+                minlength: 8,
+                maxlength: 20
             }
         },
         messages: {
-            "Nombre": {
+            "Name": {
                 required: "Indique su nombre",
                 minlength: "La longitud del nombre debe contener al menos 2 caracteres",
                 maxlength: "La longitud del nombre no debe exceder los 100 carácteres"
+            },
+            "Nick": {
+                required: "Indique su usuario",
+                minlength: "La longitud del nombre debe contener al menos 8 caracteres",
+                maxlength: "La longitud del nombre no debe exceder los 20 carácteres"
             }
         },
-        errorClass: "errorwarning",
+        errorClass: "error",
+        errorElement: "span",
         submitHandler: function () {
             isvalidform = $("#form").valid();
             Save();
@@ -62,13 +79,15 @@ function Save() {
         var operation = "save";
         var values = forms.getInputsFormValues();
 
+        console.log();
+
         if ($('#save').hasClass('btn-warning')) {
             operation = "save_modify";
-            forms.ExecuteAjax(forms.WebApiUrl + "Concept/UpdateConcept", List, values);
+            forms.ExecuteAjax("/Users/Update", List, values);
         }
         else {
-            values["ConceptoId"] = '';
-            forms.ExecuteAjax(forms.WebApiUrl + "Concept/AddConcept", List, values);
+            values["UserId"] = '';
+            forms.ExecuteAjax("/Users/SignIn", List, values);
         }
     }
 }

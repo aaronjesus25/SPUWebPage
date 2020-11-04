@@ -92,26 +92,43 @@ namespace UsersManagement.Controllers
             }
         }
 
-        // GET: Users/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
+       
         // POST: Users/Delete/5
         [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
+        public ActionResult Delete(int userId)
         {
+            ResponseViewModel resp = new ResponseViewModel();
+
             try
             {
-                // TODO: Add delete logic here
-
-                return RedirectToAction("Index");
+                resp = UserObject.Delete(userId);
             }
-            catch
+            catch (Exception ex)
             {
-                return View();
+                resp.Success = false;
+                resp.Message = ex.Message;
             }
+
+            return Json(resp, JsonRequestBehavior.AllowGet);
+        }
+
+        // POST: Users/Update/
+        [HttpPost]
+        public ActionResult Update(UserViewModel model)
+        {
+            ResponseViewModel resp = new ResponseViewModel();
+
+            try
+            {
+                resp = UserObject.Update(model);
+            }
+            catch (Exception ex)
+            {
+                resp.Success = false;
+                resp.Message = ex.Message;
+            }
+
+            return Json(resp, JsonRequestBehavior.AllowGet);
         }
     }
 }

@@ -19,8 +19,8 @@ namespace BO.ViewModel
         public bool Copy { get; set; }
         public int Type { get; set; }
         public bool RegStatus { get; set; }
-        public System.DateTime RegTimeStamp { get; set; }
-        public System.DateTime UpdateAt { get; set; }
+        public string RegTimeStamp { get; set; }
+        public string UpdateAt { get; set; }
         public string Pass { get; set; }
     }
 }

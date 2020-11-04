@@ -7,7 +7,7 @@
  * @param {} idDivForm 
  * @returns {} 
  */
-var FormsQuro = function (idButtonView, idTable, idDivTable, idForm, idDivForm) {
+var Forms = function (idButtonView, idTable, idDivTable, idForm, idDivForm) {
     var self = this;
 
     //Se declaran las propiedades necesarias
@@ -1032,6 +1032,42 @@ var FormsQuro = function (idButtonView, idTable, idDivTable, idForm, idDivForm) 
                             self.generatePopupAlert(text, "warning");
                         }
                     }
+                    if (typeof callback === "function") {
+                        callback(data);
+                    }
+                }
+            })
+            .fail(function (data) {
+                self.generateNotification('No se han podido consumir los datos, verifique su conexión ' + data.responseText, "error");
+
+            })
+            .always(function (data) {
+                $.spin('false');
+            });
+
+    };
+
+    self.ExecuteGet = function (endPoint, callback, noti = true) {
+        $.ajax({
+            type: 'GET',
+          
+            async: true,
+            url: endPoint,
+            beforeSend: function (xhr) {
+                if ($.spin !== null) {
+                    $.spin('true');
+                }
+            }
+        })
+            .done(function (data) {
+                if (typeof data !== "undefined" && data !== null) {
+                    var text = data.Message;
+                    if (data.Success == false) {
+                        if (noti !== false) {
+                            self.generatePopupAlert(text, "warning");
+                        }
+                    }
+                    
                     if (typeof callback === "function") {
                         callback(data);
                     }

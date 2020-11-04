@@ -35,7 +35,7 @@ namespace UsersManagement.Controllers
             }
             else
             {
-                return RedirectToAction("Index", new { message = "Usuario o contraseña incorrecto" });
+                return RedirectToAction("Index", new { message = "Usuario o contraseña incorrectos" });
             }          
         }
 
@@ -45,7 +45,7 @@ namespace UsersManagement.Controllers
         {
             FormsAuthentication.SignOut();
 
-            return RedirectToAction("Index", new { message = "Se ha cerrado la sesión" });
+            return RedirectToAction("Index");
         }
     }
 }

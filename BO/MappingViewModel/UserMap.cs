@@ -44,10 +44,10 @@ namespace BO.MappingViewModel
             model.Pass = entity.Pass;
             model.Petitioner = entity.Petitioner;
             model.RegStatus = entity.RegStatus;
-            model.RegTimeStamp = entity.RegTimeStamp;
+            model.RegTimeStamp = entity.RegTimeStamp.ToString("dd/MM/yyyy");
             model.Telephone = entity.Telephone;
             model.Type = entity.Type;
-            model.UpdateAt = entity.UpdateAt;
+            model.UpdateAt = entity.UpdateAt.ToString("dd/MM/yyyy");
             
             return model;
         }
@@ -69,10 +69,10 @@ namespace BO.MappingViewModel
             result.Pass = model.Pass;
             result.Petitioner = model.Petitioner;
             result.RegStatus = model.RegStatus;
-            result.RegTimeStamp = model.RegTimeStamp;
+            result.RegTimeStamp = Convert.ToDateTime(model.RegTimeStamp);
             result.Telephone = model.Telephone;
             result.Type = model.Type;
-            result.UpdateAt = model.UpdateAt;
+            result.UpdateAt = Convert.ToDateTime(model.UpdateAt);
 
             return result;
         }

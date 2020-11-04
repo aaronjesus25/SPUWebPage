@@ -44,7 +44,21 @@ namespace UsersManagement
                 "~/Content/alertifyjs1.0.8/js/alertify.js",
                 "~/Content/spinner/spin.js",
                  "~/Content/bootstrap-dropdown-hover/bootstrap-dropdownhover.js"
-                ));
+            ));
+
+            //ControlsWeb>>css
+            bundles.Add(new StyleBundle("~/bundles/controlcss").Include(
+                "~/Content/bootstrap3.3.5/css/bootstrap.min.css",                
+                "~/Content/dynatable0.3.1/jquery.dynatable.css",
+                "~/Content/alertify0/css/alertify-bootstrap-3.css",
+                "~/Content/jalert3/jAlert-v3.css",
+                "~/Content/dynatable0.3.1/dynatableloading.css",
+                "~/Content/select1.7.4/css/bootstrap-select.min.css",
+                "~/Content/datepicker2.4.5/jquery.datetimepicker.css",
+                "~/Content/alertifyjs1.0.8/css/alertify.css",               
+                "~/Content/bootstrap-dropdown-hover/css/animate.css",
+                "~/Content/bootstrap-dropdown-hover/css/bootstrap-dropdownhover.css"
+            ));
         }
     }
 }

@@ -84,6 +84,82 @@ namespace BO.BussinesObject
             return _result;
         }
 
+        //Registra un nuevo usuario
+        public ResponseViewModel Delete(int userId)
+        {
+            //variables
+            var _result = new ResponseViewModel();
+            
+            try
+            {
+                
+                //eliminar registro
+                var respuesta = UserRepository.Delete(userId);
+
+                //valida la respuesta
+                if (respuesta != null)
+                {
+                    List<UserViewModel> _list = new List<UserViewModel>();
+
+                    _list.Add(UserMap.EntityToViewModel(respuesta));
+                    _result.Message = string.Format("Se ha eliminado el usuario {0}", respuesta.Name);
+                    _result.Data = _list.OfType<object>().ToList();
+                    _result.Success = true;
+                }
+                else
+                {
+                    _result.Message = "Ha ocurrido un error";
+                    _result.Success = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                _result.Message = ex.Message;
+                _result.Success = false;
+            }
+
+            return _result;
+        }
+
+        //Registra un nuevo usuario
+        public ResponseViewModel Update(UserViewModel viewModel)
+        {
+            //variables
+            var _result = new ResponseViewModel();
+
+            try
+            {
+                 //map to Entity
+                 var usuario = UserMap.ViewModelToEntity(viewModel);
+
+                //actualizar registro
+                var respuesta = UserRepository.Update(usuario);
+
+                //valida la respuesta
+                if (respuesta != null)
+                {
+                    List<UserViewModel> _list = new List<UserViewModel>();
+
+                    _list.Add(UserMap.EntityToViewModel(respuesta));
+                    _result.Message = string.Format("Se ha actualizado el usuario {0}", respuesta.Name);
+                    _result.Data = _list.OfType<object>().ToList();
+                    _result.Success = true;
+                }
+                else
+                {
+                    _result.Message = "Ha ocurrido un error";
+                    _result.Success = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                _result.Message = ex.Message;
+                _result.Success = false;
+            }
+
+            return _result;
+        }
+
         //obtiene un usuario especificado
         public UserViewModel Login(string user, string pass)
         {

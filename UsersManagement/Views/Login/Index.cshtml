@@ -10,15 +10,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
 
-
     @Styles.Render("~/Content/css")
+    @Styles.Render("~/bundles/controlcss")
     @Styles.Render("~/Content/css/login.css")
-    @Scripts.Render("~/bundles/modernizr")
 </head>
 
 <body>
     <div class="row">
-        
+
         <!--
         you can substitue the span of reauth email for a input with the email and
         include the remember me checkbox
@@ -26,7 +25,7 @@
         <div class="container">
             <div class="card card-container">
 
-                @{ 
+                @{
                     if (!string.IsNullOrEmpty(ViewBag.Message))
                     {
                         <div class="alert alert-danger">
@@ -57,18 +56,8 @@
         </div><!-- /container -->
     </div>
 
-    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/jqueryjs")
     @Scripts.Render("~/bundles/bootstrap")
-    @Styles.Render("~/Content/css/login.css")
+    @Scripts.Render("~/Content/jsmethods/login.js")
 </body>
 </html>
-
-
-
-
-
-
-
-@section Scripts {
-    @Scripts.Render("~/Content/jsmethods/login.js")
-}
