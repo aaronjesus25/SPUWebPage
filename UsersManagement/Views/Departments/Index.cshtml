@@ -1,0 +1,74 @@
+﻿@using System.Configuration;
+
+@{
+    ViewBag.Title = "Departamentos";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var Version = ConfigurationManager.AppSettings["Version"];
+}
+
+<div class="col-xs-12 col-sm-12 col-lg-12 col-md-12 pl-0 pr-0 ml-0 mr-0" id="frame_form">
+    <form role="form" id="form">
+        <div class="col-xs-12 col-sm-12 col-lg-12 col-md-12">
+            <div class="well well-sm"><strong><span class="fa fa-exclamation-circle"></span> Datos requeridos</strong></div>
+            <div class="row">
+                <div class="form-group col-xs-12 col-sm-12 col-md-4 col-ls-4 ocultar">
+                    <label>departamento</label>
+                    <div class="right-inner-addon">
+                        <i class="fa fa-exclamation-circle"></i>
+                        <input type="text" class="form-control" autocomplete="off" disabled="disabled" id="DepartmentId" name="DepartmentId" />
+                    </div>
+                </div>               
+                
+                <div class="form-group col-xs-12 col-sm-12 col-md-6 col-lg-6 col-ls-6">
+                    <label for="Nick">Nombre</label>
+                    <div class="right-inner-addon">
+                        <i class="fa fa-exclamation-circle"></i>
+                        <input type="text" class="form-control" autocomplete="off" id="Nombre" name="Nombre" maxlength="100" />
+                    </div>
+                </div>                             
+            </div>
+        </div>
+
+        <div id="buttonsform" class="text-right">
+            <button type="button" class="btn btn-success" id="save"><i class="fa fa-save"></i> Guardar</button>
+            <button type="button" class="btn btn-danger" id="cancel"><i class="fa fa-remove"></i> Cancelar</button>
+        </div>
+    </form>
+</div>
+
+<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+    <div id="butonsoperations">
+        <div class="form-group pull-left">
+            <button type="button" class="btn btn-success" id="checkall"><i class="fa fa-list"></i> Selec. Todos</button>
+            <button type="button" class="btn btn-success" id="create_modify"><i class="fa fa-male"></i> Crear</button>
+            <button type="button" class="btn btn-danger" id="delete"><i class="fa fa-remove"></i> Eliminar</button>
+        </div>       
+    </div>
+</div>
+
+<div class="col-xs-12 col-sm-12 col-md-12 col-ls-12" id="frame_table">
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <div class="text-center">
+                Listado de departamentos
+            </div>
+        </div>
+        <div class="panel-footer table-responsive">
+            <table class="table table-bordered table-striped" id="my-final-table">
+                <thead>
+                    <tr>
+                        <th class="ocultar" id="DepartmentId" data-dynatable-column="DepartmentId">Clave</th>
+                        <th id="html" data-dynatable-column="html"></th>
+                        <th id="Nombre" data-dynatable-column="Nombre">Nombre</th>
+                        <th id="CreatedAt" data-dynatable-column="CreatedAt">Fecha</th>                        
+                    </tr>
+                </thead>
+            </table>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/Content/jsmethods/manager.js?version=" + Version)
+    @Scripts.Render("~/Content/jsmethods/department.js?version=" + Version)
+}

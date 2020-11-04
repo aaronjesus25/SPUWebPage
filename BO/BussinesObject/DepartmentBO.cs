@@ -1,36 +1,36 @@
-﻿using System;
+﻿using BO.MappingViewModel;
+using BO.ViewModel;
+using Data.Models;
+using Data.Repository;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Data.Models;
-using Data.Repository;
-using BO.MappingViewModel;
-using BO.ViewModel;
-using BO.BussinesObject;
 
 namespace BO.BussinesObject
 {
-    public class UserBO
+    public class DepartmentBO
     {
         //objects
-        private readonly UserMap UserMap = new UserMap();
-        private readonly UserRepository UserRepository = new UserRepository();
+        private readonly DepartmentMap Map = new DepartmentMap();
+        private readonly DepartmentRepository Repository = new DepartmentRepository();
+
 
         //obtiene la lista de usuarios
         public ResponseViewModel GetList()
         {
             //variables
             var _result = new ResponseViewModel();
-            List<user> list = new List<user>();
+            List<department> list = new List<department>();
 
             //obtengo la lista de usuarios activos 
-            list = UserRepository.GetList().ToList();
+            list = Repository.GetList().ToList();
 
             //valida si la lista tiene datos
             if (list.Count > 0)
             {
-                _result.Data = UserMap.EntityToViewModel(list).OfType<object>().ToList();
+                _result.Data = Map.EntityToViewModel(list).OfType<object>().ToList();
                 _result.Success = true;
                 _result.Message = "Lista de clientes cargado";
             }
@@ -43,28 +43,28 @@ namespace BO.BussinesObject
             return _result;
         }
 
-        //Registra un nuevo usuario
-        public ResponseViewModel Register(UserViewModel viewModel)
+        //Registra un nuevo departamento
+        public ResponseViewModel Register(DepartmentViewModel model)
         {
             //variables
             var _result = new ResponseViewModel();
             DateTime now = DateTime.Today;
-            
+
             try
             {
                 //map entity
-                var usuario = UserMap.ViewModelToEntity(viewModel);
+                var entity = Map.ViewModelToEntity(model);
 
                 //Crear registro
-                var respuesta = UserRepository.Register(usuario);
+                var respuesta = Repository.Register(entity);
 
                 //valida la respuesta
                 if (respuesta != null)
                 {
-                    List<UserViewModel> _list = new List<UserViewModel>();
+                    List<DepartmentViewModel> _list = new List<DepartmentViewModel>();
 
-                    _list.Add(UserMap.EntityToViewModel(usuario));
-                    _result.Message = string.Format("Se ha creado el usuario {0}", usuario.Name);
+                    _list.Add(Map.EntityToViewModel(entity));
+                    _result.Message = string.Format("Se ha creado el departamento {0}", entity.Nombre);
                     _result.Data = _list.OfType<object>().ToList();
                     _result.Success = true;
 
@@ -84,25 +84,25 @@ namespace BO.BussinesObject
             return _result;
         }
 
-        //Elimina un usuario
-        public ResponseViewModel Delete(int userId)
+        //Elimina un departamento
+        public ResponseViewModel Delete(int Id)
         {
             //variables
             var _result = new ResponseViewModel();
-            
+
             try
             {
-                
+
                 //eliminar registro
-                var respuesta = UserRepository.Delete(userId);
+                var respuesta = Repository.Delete(Id);
 
                 //valida la respuesta
                 if (respuesta != null)
                 {
-                    List<UserViewModel> _list = new List<UserViewModel>();
+                    List<DepartmentViewModel> _list = new List<DepartmentViewModel>();
 
-                    _list.Add(UserMap.EntityToViewModel(respuesta));
-                    _result.Message = string.Format("Se ha eliminado el usuario {0}", respuesta.Name);
+                    _list.Add(Map.EntityToViewModel(respuesta));
+                    _result.Message = string.Format("Se ha eliminado el departamento {0}", respuesta.Nombre);
                     _result.Data = _list.OfType<object>().ToList();
                     _result.Success = true;
                 }
@@ -121,27 +121,27 @@ namespace BO.BussinesObject
             return _result;
         }
 
-        //Actualiza un usuario
-        public ResponseViewModel Update(UserViewModel viewModel)
+        //Actualiza un departamento
+        public ResponseViewModel Update(DepartmentViewModel model)
         {
             //variables
             var _result = new ResponseViewModel();
 
             try
             {
-                 //map to Entity
-                 var usuario = UserMap.ViewModelToEntity(viewModel);
+                //map to Entity
+                var entity = Map.ViewModelToEntity(model);
 
                 //actualizar registro
-                var respuesta = UserRepository.Update(usuario);
+                var respuesta = Repository.Update(entity);
 
                 //valida la respuesta
                 if (respuesta != null)
                 {
-                    List<UserViewModel> _list = new List<UserViewModel>();
+                    List<DepartmentViewModel> _list = new List<DepartmentViewModel>();
 
-                    _list.Add(UserMap.EntityToViewModel(respuesta));
-                    _result.Message = string.Format("Se ha actualizado el usuario {0}", respuesta.Name);
+                    _list.Add(Map.EntityToViewModel(respuesta));
+                    _result.Message = string.Format("Se ha actualizado el departamento {0}", respuesta.Nombre);
                     _result.Data = _list.OfType<object>().ToList();
                     _result.Success = true;
                 }
@@ -158,23 +158,6 @@ namespace BO.BussinesObject
             }
 
             return _result;
-        }
-
-        //obtiene un usuario especificado
-        public UserViewModel Login(string user, string pass)
-        {
-            //variables
-            UserViewModel viewModel = null;
-
-            //obtengo el usuario activo
-            var result = UserRepository.Login(user, pass);
-            
-            if (result != null)
-            {
-                viewModel = UserMap.EntityToViewModel(result);
-            }
-
-            return viewModel;
         }
     }
 }
