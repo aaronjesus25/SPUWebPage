@@ -160,6 +160,45 @@ namespace BO.BussinesObject
             return _result;
         }
 
+        //Actualiza los permisos de un ususario
+        public ResponseViewModel UpdatePermisions(UserViewModel viewModel)
+        {
+            //variables
+            var _result = new ResponseViewModel();
+
+            try
+            {
+                //map to Entity
+                var usuario = UserMap.ViewModelToEntity(viewModel);
+
+                //actualizar registro
+                var respuesta = UserRepository.UpdatePermisions(usuario);
+
+                //valida la respuesta
+                if (respuesta != null)
+                {
+                    List<UserViewModel> _list = new List<UserViewModel>();
+
+                    _list.Add(UserMap.EntityToViewModel(respuesta));
+                    _result.Message = string.Format("Se han actualizado los permisos del usuario {0}", respuesta.Name);
+                    _result.Data = _list.OfType<object>().ToList();
+                    _result.Success = true;
+                }
+                else
+                {
+                    _result.Message = "Ha ocurrido un error";
+                    _result.Success = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                _result.Message = ex.Message;
+                _result.Success = false;
+            }
+
+            return _result;
+        }
+
         //obtiene un usuario especificado
         public UserViewModel Login(string user, string pass)
         {
@@ -169,6 +208,23 @@ namespace BO.BussinesObject
             //obtengo el usuario activo
             var result = UserRepository.Login(user, pass);
             
+            if (result != null)
+            {
+                viewModel = UserMap.EntityToViewModel(result);
+            }
+
+            return viewModel;
+        }
+
+        //obtiene un usuario especificado
+        public UserViewModel GetById(int userId)
+        {
+            //variables
+            UserViewModel viewModel = null;
+
+            //obtengo el usuario activo
+            var result = UserRepository.GetById(userId);
+
             if (result != null)
             {
                 viewModel = UserMap.EntityToViewModel(result);

@@ -23,6 +23,12 @@ namespace UsersManagement.Controllers
             return View();
         }
 
+        // GET: Permisos
+        public ActionResult Permisos()
+        {
+            return View();
+        }
+
         // GET: Users/SignIn
         public ActionResult Register()
         {
@@ -121,6 +127,26 @@ namespace UsersManagement.Controllers
             try
             {
                 resp = UserObject.Update(model);
+            }
+            catch (Exception ex)
+            {
+                resp.Success = false;
+                resp.Message = ex.Message;
+            }
+
+            return Json(resp, JsonRequestBehavior.AllowGet);
+        }
+
+
+        // POST: Users/Update/
+        [HttpPost]
+        public ActionResult UpdatePermisions(UserViewModel model)
+        {
+            ResponseViewModel resp = new ResponseViewModel();
+
+            try
+            {
+                resp = UserObject.UpdatePermisions(model);
             }
             catch (Exception ex)
             {

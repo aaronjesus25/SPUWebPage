@@ -1,5 +1,5 @@
 ﻿/**
- * Clase para manejar las vistas de Quro-GPS. 
+ * Clase para manejar las vistas. 
  * @param {} idButtonView 
  * @param {} idTable 
  * @param {} idDivTable 
@@ -876,7 +876,7 @@ var Forms = function (idButtonView, idTable, idDivTable, idForm, idDivForm) {
 
                         }
                     } else {
-                        window.location = "http://gps.quro.com.mx/Account/Login";
+                        alert("Error de conexion")
                     }
 
                 }

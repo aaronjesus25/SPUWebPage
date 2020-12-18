@@ -247,7 +247,9 @@
     <Content Include="Content\jsmethods\initAdmin.js" />
     <Content Include="Content\jsmethods\login.js" />
     <Content Include="Content\jsmethods\manager.js" />
+    <Content Include="Content\jsmethods\permisos.js" />
     <Content Include="Content\jsmethods\user.js" />
+    <Content Include="Content\jsmethods\utils.js" />
     <Content Include="Content\lz_string\bin\bin.js" />
     <Content Include="Content\lz_string\libs\base64-string.js" />
     <Content Include="Content\lz_string\libs\lz-string.js" />
@@ -394,6 +396,11 @@
     <Content Include="Views\Login\Index.cshtml" />
     <Content Include="Views\Users\Register.cshtml" />
     <Content Include="Views\Departments\Index.cshtml" />
+    <Content Include="Views\Users\Permisos.cshtml" />
+    <Content Include="Views\Home\Jefe.cshtml" />
+    <Content Include="Views\Home\Autorizador.cshtml" />
+    <Content Include="Views\Home\Copia.cshtml" />
+    <Content Include="Views\Home\Solicitante.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

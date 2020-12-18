@@ -101,5 +101,37 @@ namespace Data.Repository
 
             return userEntity;
         }
+
+        /// <summary>
+        ///    Actualiza un usuario
+        /// </summary>
+        public user UpdatePermisions(user user)
+        {
+            user userEntity = DataBaseEntities.user.Where(w => w.UserId == user.UserId).FirstOrDefault();
+
+            if (userEntity != null)
+            {
+                userEntity.Boss = user.Boss;
+                userEntity.Authorizing = user.Authorizing;
+                userEntity.Petitioner = user.Petitioner;
+                userEntity.Copy = user.Copy;
+                
+                var update = DataBaseEntities.Entry(userEntity);
+                update.State = EntityState.Modified;
+                DataBaseEntities.SaveChanges();
+            }
+
+            return userEntity;
+        }
+
+        /// <summary>
+        ///    Actualiza un usuario
+        /// </summary>
+        public user GetById(int userId)
+        {
+            user userEntity = DataBaseEntities.user.Where(w => w.UserId == userId).FirstOrDefault();
+            
+            return userEntity;
+        }
     }
 }

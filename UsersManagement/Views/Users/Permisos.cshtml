@@ -1,0 +1,38 @@
+﻿@using System.Configuration;
+
+@{
+    ViewBag.Title = "Permisos";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var Version = ConfigurationManager.AppSettings["Version"];
+}
+
+
+<div class="col-xs-12 col-sm-12 col-md-12 col-ls-12" id="frame_table">
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <div class="text-center">
+                Permisos de usarios
+            </div>
+        </div>
+        <div class="panel-footer table-responsive">
+            <table class="table table-bordered table-striped" id="my-final-table">
+                <thead>
+                    <tr>
+                        <th class="ocultar" id="UserId" data-dynatable-column="UserId">Clave</th>
+                        <th id="Nick" data-dynatable-column="Nick">Usuario</th>
+                        <th id="Name" data-dynatable-column="Name">Nombre</th>
+                        <th id="Email" data-dynatable-column="Jefe">Jefe</th>
+                        <th id="Email" data-dynatable-column="Autorizador">Autorizador</th>
+                        <th id="Telephone" data-dynatable-column="Solicitante">Solicitante</th>
+                        <th id="RegTimeStamp" data-dynatable-column="Copia">Copia</th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/Content/jsmethods/utils.js?version=" + Version)
+    @Scripts.Render("~/Content/jsmethods/permisos.js?version=" + Version)
+}
