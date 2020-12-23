@@ -12,21 +12,29 @@ namespace Data.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class department
+    public partial class requests
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public department()
+        public requests()
         {
-            this.user = new HashSet<user>();
+            this.questions = new HashSet<questions>();
         }
     
-        public int DepartmentId { get; set; }
-        public string Nombre { get; set; }
+        public int RequestId { get; set; }
+        public int ConceptId { get; set; }
+        public int CopyId { get; set; }
+        public int AuthorizeId { get; set; }
         public System.DateTime CreatedAt { get; set; }
         public System.DateTime UpdatedAt { get; set; }
         public bool RegStatus { get; set; }
+        public int Type { get; set; }
+        public int UserId { get; set; }
     
+        public virtual concept concept { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<user> user { get; set; }
+        public virtual ICollection<questions> questions { get; set; }
+        public virtual user user { get; set; }
+        public virtual user user1 { get; set; }
+        public virtual user user2 { get; set; }
     }
 }

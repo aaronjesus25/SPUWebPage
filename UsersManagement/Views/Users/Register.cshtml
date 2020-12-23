@@ -30,10 +30,8 @@
                 <div class="form-group col-xs-12 col-sm-12 col-md-8 col-lg-8 col-ls-8">
                     <label for="tipo">Departamento</label>
                     <div class="right-inner-addon">
-                        <select name="Departamento" id="Departamento" class="form-control">
-                            <option value="false">Ventas</option>
-                            <option value="true">Desarrollo</option>
-                            <option value="true">Soporte</option>
+                        <select name="DepartmentId" id="DepartmentId" class="form-control">
+                           
                         </select>
                     </div>
                 </div>
@@ -131,10 +129,13 @@
                 <thead>
                     <tr>
                         <th class="ocultar" id="UserId" data-dynatable-column="UserId">Clave</th>
+                        <th class="ocultar" id="DepartmentId" data-dynatable-column="DepartmentId">DepartmentId</th>
+                        <th class="ocultar" id="Type" data-dynatable-column="Type">Type</th>
                         <th id="html" data-dynatable-column="html"></th>
                         <th id="Nick" data-dynatable-column="Nick">Usuario</th>
                         <th id="Name" data-dynatable-column="Name">Nombre</th>
                         <th id="Email" data-dynatable-column="Email">Correo</th>
+                        <th id="Departamento" data-dynatable-column="Departamento">Departamento</th>
                         <th id="Telephone" data-dynatable-column="Telephone">Telefono</th>
                         <th id="RegTimeStamp" data-dynatable-column="RegTimeStamp">Fecha</th>
                     </tr>

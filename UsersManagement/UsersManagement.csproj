@@ -134,9 +134,11 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\ConceptsController.cs" />
     <Compile Include="Controllers\DepartmentsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
+    <Compile Include="Controllers\RequestsController.cs" />
     <Compile Include="Controllers\UsersController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -243,11 +245,13 @@
     <Content Include="Content\jquery2.1.3\jquery.min.js" />
     <Content Include="Content\jqueryvalidation\jquery-validate.js" />
     <Content Include="Content\jqueryvalidation\jquery-validate.min.js" />
+    <Content Include="Content\jsmethods\concept.js" />
     <Content Include="Content\jsmethods\department.js" />
     <Content Include="Content\jsmethods\initAdmin.js" />
     <Content Include="Content\jsmethods\login.js" />
     <Content Include="Content\jsmethods\manager.js" />
     <Content Include="Content\jsmethods\permisos.js" />
+    <Content Include="Content\jsmethods\solicitante.js" />
     <Content Include="Content\jsmethods\user.js" />
     <Content Include="Content\jsmethods\utils.js" />
     <Content Include="Content\lz_string\bin\bin.js" />
@@ -401,9 +405,11 @@
     <Content Include="Views\Home\Autorizador.cshtml" />
     <Content Include="Views\Home\Copia.cshtml" />
     <Content Include="Views\Home\Solicitante.cshtml" />
+    <Content Include="Views\Concepts\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\Requests\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />

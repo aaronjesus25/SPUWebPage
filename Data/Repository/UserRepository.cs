@@ -48,6 +48,26 @@ namespace Data.Repository
         }
 
         /// <summary>
+        ///     obtiene la lista de copias 
+        /// </summary>
+        public List<user> GetListCopy()
+        {
+            List<user> users = new List<user>();
+            users = DataBaseEntities.user.Where(w => w.RegStatus && w.Copy).ToList();
+            return users;
+        }
+
+        /// <summary>
+        ///     obtiene la lista de autorizadores 
+        /// </summary>
+        public List<user> GetListAutorize()
+        {
+            List<user> users = new List<user>();
+            users = DataBaseEntities.user.Where(w => w.RegStatus && w.Authorizing).ToList();
+            return users;
+        }
+
+        /// <summary>
         ///     obtiene la lista de usuarios
         /// </summary>
         public user Login(string user, string password)

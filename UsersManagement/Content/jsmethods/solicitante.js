@@ -5,6 +5,7 @@ var idTable = "#my-final-table";
 var dynatable;
 var emailVal = "";
 var band = false;
+var counter = 0;
 
 //init
 $(document).ready(function () {
@@ -13,7 +14,7 @@ $(document).ready(function () {
     forms.Init();
     forms.HideForm();
     forms.ShowForm(true);//Enable
-    forms.DeleteRowArray("/Users/Delete", List);
+    //forms.DeleteRowArray("/Users/Delete", List);
     $('#save').click(function (e) {
         e.preventDefault();
         isvalidform = true;
@@ -22,8 +23,11 @@ $(document).ready(function () {
 
     band = false;
 
-    FillDepts();
-    List();    
+    QuestionsSet();
+    FillAutorize();
+    FillCopy();
+    FillConcepts();
+    //List();
 });
 
 //evento seleccionar registro
@@ -39,7 +43,7 @@ function SelectedCheck() {
 
 //validar formulario
 function ValidateForm() {
-   
+
     $("#form").validate({
         rules: {
             "Name": {
@@ -79,21 +83,37 @@ function Save() {
     if (isvalidform) {
         var operation = "save";
         var values = forms.getInputsFormValues();
+        var questions = [];
 
-        console.log();
 
-        if ($('#save').hasClass('btn-warning')) {
-            operation = "save_modify";
-            forms.ExecuteAjax("/Users/Update", List, values);
+        for (var i = 0; i <= counter; i++) {
+           
+            var question = i === 0 ? $("input[name='name']").val() : $("input[name='name" + (i -1) + "']" ).val();
+
+            var isValid = ValidateQuestion(question);
+
+            if (isValid) {
+                paramQuestion = {
+                    Text: question
+                }
+
+                questions.push(paramQuestion);
+            }
         }
-        else {
-            values["UserId"] = '';
-            forms.ExecuteAjax("/Users/SignIn", List, values);
-        }
+
+        values.Questions = questions;
+        console.log(values);
+
+        //if ($('#save').hasClass('btn-warning')) {
+        //    operation = "save_modify";
+        //    forms.ExecuteAjax("/Requests/Update", List, values);
+        //}
+        //else {
+        //    values["UserId"] = '';
+        //    forms.ExecuteAjax("/Requests/SignIn", List, values);
+        //}
     }
 }
-
-
 
 //GET LIST 
 function List() {
@@ -152,9 +172,61 @@ function SetChecked() {
     forms.ChangeTextButtonChekAll(false, "#checkall");
 }
 
+//tabla de preguntas para solicitudes
+function QuestionsSet() {
+
+    //evento boton nueva pregunta
+    $("#addrow").on("click", function () {
+
+        //valida que solo se registren 5 preguntas
+        if (counter <= 3) {
+            var newRow = $("<tr>");
+            var cols = "";
+
+            cols += '<td><input type="text" class="form-control" name="name' + counter + '"/></td>';
+            cols += '<td><input type="button" class="ibtnDel btn btn-md btn-danger "  value="Delete"></td>';
+
+            newRow.append(cols);
+
+            $("table.order-list").append(newRow);
+
+            counter++;
+        }       
+    });
+
+    //evento boton eliminar pregunta 
+    $("table.order-list").on("click", ".ibtnDel", function (event) {
+        $(this).closest("tr").remove();
+        counter -= 1
+    });
+}
+
 /*Llenar drop departamentos*/
-function FillDepts() {
+function FillAutorize() {
 
     //llena el combo de datos
-    forms.FillCombo("DepartmentId", 'Nombre', 'DepartmentId', '/Departments/GetList', '', 'GET');
+    forms.FillCombo("AutorizadorId", 'Name', 'UserId', '/Users/GetListAuthorize', '');
+}
+
+/*Llenar drop usuarios de tipo copia*/
+function FillCopy() {
+
+    //llena el combo de datos
+    forms.FillCombo("CopiaId", 'Name', 'UserId', '/Users/GetListCopy', '');
+}
+
+/*Llenar drop usuarios de tipo copia*/
+function FillConcepts() {
+
+    //llena el combo de datos
+    forms.FillCombo("ConceptId", 'Nombre', 'ConceptId', '/Concepts/GetList', '');
+}
+
+function ValidateQuestion(text) {
+    if (text === undefined || text === '' || text === null) {
+        return false;
+    }
+    else {
+        return true;
+    }
 }

@@ -27,5 +27,8 @@ namespace Data.Models
     
         public virtual DbSet<user> user { get; set; }
         public virtual DbSet<department> department { get; set; }
+        public virtual DbSet<concept> concept { get; set; }
+        public virtual DbSet<questions> questions { get; set; }
+        public virtual DbSet<requests> requests { get; set; }
     }
 }

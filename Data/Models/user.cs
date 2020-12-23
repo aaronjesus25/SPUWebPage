@@ -14,6 +14,14 @@ namespace Data.Models
     
     public partial class user
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public user()
+        {
+            this.requests = new HashSet<requests>();
+            this.requests1 = new HashSet<requests>();
+            this.requests2 = new HashSet<requests>();
+        }
+    
         public int UserId { get; set; }
         public string Nick { get; set; }
         public string Name { get; set; }
@@ -28,5 +36,14 @@ namespace Data.Models
         public System.DateTime RegTimeStamp { get; set; }
         public System.DateTime UpdateAt { get; set; }
         public string Pass { get; set; }
+        public int DepartmentId { get; set; }
+    
+        public virtual department department { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<requests> requests { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<requests> requests1 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<requests> requests2 { get; set; }
     }
 }

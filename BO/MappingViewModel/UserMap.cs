@@ -48,6 +48,8 @@ namespace BO.MappingViewModel
             model.Telephone = entity.Telephone;
             model.Type = entity.Type;
             model.UpdateAt = entity.UpdateAt.ToString("dd/MM/yyyy");
+            model.Departamento = entity.department == null ? string.Empty : entity.department.Nombre;
+            model.DepartmentId = entity.DepartmentId;
             
             return model;
         }
@@ -73,6 +75,7 @@ namespace BO.MappingViewModel
             result.Telephone = model.Telephone;
             result.Type = model.Type;
             result.UpdateAt = Convert.ToDateTime(model.UpdateAt);
+            result.DepartmentId = model.DepartmentId;
 
             return result;
         }

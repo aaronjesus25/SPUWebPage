@@ -57,6 +57,26 @@ namespace UsersManagement.Controllers
             return Json(list, JsonRequestBehavior.AllowGet);                      
         }
 
+        //Get: Users/GetList
+        [HttpGet]
+        public JsonResult GetListCopy()
+        {
+            // TODO: Add insert logic here
+            var list = UserObject.GetListCopy();
+
+            return Json(list, JsonRequestBehavior.AllowGet);
+        }
+
+        //Get: Users/GetList
+        [HttpGet]
+        public JsonResult GetListAuthorize()
+        {
+            // TODO: Add insert logic here
+            var list = UserObject.GetListAutorize();
+
+            return Json(list, JsonRequestBehavior.AllowGet);
+        }
+
         // POST: Users/Create
         [HttpPost]
         public JsonResult SignIn(UserViewModel viewModel)

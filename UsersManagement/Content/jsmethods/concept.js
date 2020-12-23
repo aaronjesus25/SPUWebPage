@@ -13,7 +13,7 @@ $(document).ready(function () {
     forms.Init();
     forms.HideForm();
     forms.ShowForm(true);//Enable
-    forms.DeleteRowArray("/Users/Delete", List);
+    forms.DeleteRowArray("/Concepts/Delete", List);
     $('#save').click(function (e) {
         e.preventDefault();
         isvalidform = true;
@@ -22,8 +22,7 @@ $(document).ready(function () {
 
     band = false;
 
-    FillDepts();
-    List();    
+    List();
 });
 
 //evento seleccionar registro
@@ -39,18 +38,13 @@ function SelectedCheck() {
 
 //validar formulario
 function ValidateForm() {
-   
+
     $("#form").validate({
         rules: {
             "Name": {
                 required: true,
                 minlength: 2,
                 maxlength: 100
-            },
-            "Nick": {
-                required: true,
-                minlength: 8,
-                maxlength: 20
             }
         },
         messages: {
@@ -58,11 +52,6 @@ function ValidateForm() {
                 required: "Indique su nombre",
                 minlength: "La longitud del nombre debe contener al menos 2 caracteres",
                 maxlength: "La longitud del nombre no debe exceder los 100 carácteres"
-            },
-            "Nick": {
-                required: "Indique su usuario",
-                minlength: "La longitud del nombre debe contener al menos 8 caracteres",
-                maxlength: "La longitud del nombre no debe exceder los 20 carácteres"
             }
         },
         errorClass: "error",
@@ -84,28 +73,50 @@ function Save() {
 
         if ($('#save').hasClass('btn-warning')) {
             operation = "save_modify";
-            forms.ExecuteAjax("/Users/Update", List, values);
+            forms.ExecuteAjax("/Concepts/Update", List, values);
         }
         else {
-            values["UserId"] = '';
-            forms.ExecuteAjax("/Users/SignIn", List, values);
+            values["DepartmentId"] = '';
+            forms.ExecuteAjax("/Concepts/Create", List, values);
         }
     }
 }
 
-
+//llenado de dropdown
+function DropList() {
+    $.ajax({
+        type: 'GET',
+        contentType: 'application/json',
+        data: "",
+        beforeSend: function () {
+            $.spin('true');
+        },
+        url: '/Concepts/GetList',
+        success: function (data) {
+            if (data != null) {
+                //llenado de la tabla
+            }
+        },
+        error: function (xhr) {
+            forms.generateNotification('Imposible consumir WS, verifique su conexión-->' + xhr.responseText, "error");
+        }
+    }).always(function () {
+        $.spin('false');
+    });
+}
 
 //GET LIST 
 function List() {
     $.ajax({
         type: 'GET',
         async: true,
-        url: '/Users/GetList',
+        url: '/Concepts/GetList',
         beforeSend: function (xhr) {
             $.spin('true');
         }
     }).done(function (data) {
 
+        //arma la lista de datos
         BuidList(data);
 
     }).fail(function (data) {
@@ -144,17 +155,10 @@ function BuidList(data) {
     }
 }
 
-//deseleccionar registros
+//checkboxes
 function SetChecked() {
     $(idTable + " input").prop("checked", false);
     forms.VisibleButtonsOperations();
     forms.ResetControls();
     forms.ChangeTextButtonChekAll(false, "#checkall");
-}
-
-/*Llenar drop departamentos*/
-function FillDepts() {
-
-    //llena el combo de datos
-    forms.FillCombo("DepartmentId", 'Nombre', 'DepartmentId', '/Departments/GetList', '', 'GET');
 }

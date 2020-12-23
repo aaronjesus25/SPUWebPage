@@ -22,5 +22,8 @@ namespace BO.ViewModel
         public string RegTimeStamp { get; set; }
         public string UpdateAt { get; set; }
         public string Pass { get; set; }
+        public string Departamento { get; set; }
+        public int DepartmentId { get; set; }
+
     }
 }

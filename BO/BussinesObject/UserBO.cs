@@ -43,6 +43,58 @@ namespace BO.BussinesObject
             return _result;
         }
 
+        //obtiene la lista de usuarios
+        public ResponseViewModel GetListCopy()
+        {
+            //variables
+            var _result = new ResponseViewModel();
+            List<user> list = new List<user>();
+
+            //obtengo la lista de usuarios activos 
+            list = UserRepository.GetListCopy().ToList();
+
+            //valida si la lista tiene datos
+            if (list.Count > 0)
+            {
+                _result.Data = UserMap.EntityToViewModel(list).OfType<object>().ToList();
+                _result.Success = true;
+                _result.Message = "Lista de clientes cargado";
+            }
+            else
+            {
+                _result.Success = false;
+                _result.Message = "No hay datos disponibles";
+            }
+
+            return _result;
+        }
+
+        //obtiene la lista de usuarios
+        public ResponseViewModel GetListAutorize()
+        {
+            //variables
+            var _result = new ResponseViewModel();
+            List<user> list = new List<user>();
+
+            //obtengo la lista de usuarios activos 
+            list = UserRepository.GetListAutorize().ToList();
+
+            //valida si la lista tiene datos
+            if (list.Count > 0)
+            {
+                _result.Data = UserMap.EntityToViewModel(list).OfType<object>().ToList();
+                _result.Success = true;
+                _result.Message = "Lista de clientes cargado";
+            }
+            else
+            {
+                _result.Success = false;
+                _result.Message = "No hay datos disponibles";
+            }
+
+            return _result;
+        }
+
         //Registra un nuevo usuario
         public ResponseViewModel Register(UserViewModel viewModel)
         {

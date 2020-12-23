@@ -12,21 +12,15 @@ namespace Data.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class department
+    public partial class questions
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public department()
-        {
-            this.user = new HashSet<user>();
-        }
-    
-        public int DepartmentId { get; set; }
-        public string Nombre { get; set; }
+        public int questionId { get; set; }
+        public string Text { get; set; }
+        public bool RegStatus { get; set; }
         public System.DateTime CreatedAt { get; set; }
         public System.DateTime UpdatedAt { get; set; }
-        public bool RegStatus { get; set; }
+        public int RequestId { get; set; }
     
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<user> user { get; set; }
+        public virtual requests requests { get; set; }
     }
 }
