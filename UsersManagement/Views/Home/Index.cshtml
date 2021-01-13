@@ -6,33 +6,93 @@
     var Version = ConfigurationManager.AppSettings["Version"];
 }
 
-<div class="row">
-    <div class="col-xs-12 col-sm-12 col-md-12 col-ls-12" id="frame_table">
-        <div class="panel panel-primary">
-            <div class="panel-heading">
-                <div class="text-center">
-                    Listado de solicitudes
-                </div>
+@section css{
+    @Styles.Render("~/bundles/daterange")
+    @Styles.Render("~/Content/bootstrap-select/dist/css/bootstrap-select.min.css")
+}
+
+<!--Filtro de datos-->
+<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+    <div class="row">
+        <div class="form-group col-xs-12 col-sm-12 col-md-4 col-lg-4">
+            <label for="dateTimePickerStart">Fecha inicio</label>
+            <input type="text" class="form-control" id="dateTimePickerStart" placeholder="Seleccione Fecha">
+        </div>
+        <div class="form-group col-xs-12 col-sm-12 col-md-4 col-lg-4">
+            <label for="dateTimePickerEnd">Fecha fin</label>
+            <input type="text" class="form-control" id="dateTimePickerEnd" placeholder="Seleccione Fecha">
+        </div>
+        <div class="form-group col-xs-12 col-sm-12 col-md-4 col-lg-4">
+            <label for="Status">Status</label>
+            <select class="form-control" id="Status" name="Status">
+                <option value="0">Solicitado</option>
+                <option value="1">Aprobado</option>
+                <option value="2">Autorizado</option>
+                <option value="3">Rechazado</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <div class="form-group pull-right">
+                <button type="submit" class="btn btn-success" id="listado" onclick="List();"><i class="fa fa-search"></i> Buscar</button>
             </div>
-            <div class="panel-footer table-responsive">
-                <table class="table table-bordered table-striped" id="my-final-table">
-                    <thead>
-                        <tr>
-                            <th id="html" data-dynatable-column="html"></th>
-                            <th class="ocultar" id="UserId" data-dynatable-column="UserId">Clave</th>
-                            <th id="Nick" data-dynatable-column="Nick">Usuario</th>
-                            <th id="Name" data-dynatable-column="Name">Solicitud</th>
-                            <th id="Email" data-dynatable-column="Email">Status</th>
-                        </tr>
-                    </thead>
-                </table>
+        </div>
+    </div>
+</div>
+
+<!--Tabla de datos-->
+<div class="col-xs-12 col-sm-12 col-md-12 col-ls-12" id="frame_table">
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <div class="text-center">
+                Listado de solicitudes
+            </div>
+        </div>
+        <div class="panel-footer table-responsive">
+            <table class="table table-bordered table-striped" id="my-final-table">
+                <thead>
+                    <tr>                      
+                        <th class="ocultar" id="RequestId" data-dynatable-column="RequestId">RequestId</th>
+                        <th class="ocultar" id="UserId" data-dynatable-column="UserId">Clave usuario</th>
+                        <th id="UserName" data-dynatable-column="UserName">Usuario</th>
+                        <th id="ConceptName" data-dynatable-column="ConceptName">Solicitud</th>
+                        <th id="CreatedAt" data-dynatable-column="CreatedAt">Fecha</th>
+                        <th id="StatusName" data-dynatable-column="StatusName">Status</th>
+                        <th id="btnQuestions" data-dynatable-column="btnQuestions"></th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Questions -->
+<div id="myModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Preguntas de la solicitud</h4>
+            </div>
+            <div class="modal-body">
+                <div id="contentmodal"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
             </div>
         </div>
     </div>
 </div>
 
 @section Scripts {
-    @Scripts.Render("~/Content/jsmethods/manager.js?version=" + Version)
-    @*@Scripts.Render("~/Content/jsmethods/initAdmin.js?version=" + Version)*@    
+    @Scripts.Render("~/Content/daterangepicker/moment.min.js")
+    @Scripts.Render("~/Content/daterangepicker/es.js")
+    @Scripts.Render("~/Content/daterangepicker/daterangepicker.js")
+    @Scripts.Render("~/Content/jsmethods/utils.js?version=" + Version)
+    @Scripts.Render("~/Content/jsmethods/initAdmin.js?version=" + Version)
 }
 

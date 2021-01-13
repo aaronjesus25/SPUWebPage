@@ -44,14 +44,14 @@ namespace BO.BussinesObject
         }
 
         //obtiene la lista de usuarios
-        public ResponseViewModel GetListCopy()
+        public ResponseViewModel GetListCopy(int departmentId)
         {
             //variables
             var _result = new ResponseViewModel();
             List<user> list = new List<user>();
 
             //obtengo la lista de usuarios activos 
-            list = UserRepository.GetListCopy().ToList();
+            list = UserRepository.GetListCopy(departmentId).ToList();
 
             //valida si la lista tiene datos
             if (list.Count > 0)
@@ -70,14 +70,14 @@ namespace BO.BussinesObject
         }
 
         //obtiene la lista de usuarios
-        public ResponseViewModel GetListAutorize()
+        public ResponseViewModel GetListAutorize(int departmentId)
         {
             //variables
             var _result = new ResponseViewModel();
             List<user> list = new List<user>();
 
             //obtengo la lista de usuarios activos 
-            list = UserRepository.GetListAutorize().ToList();
+            list = UserRepository.GetListAutorize(departmentId).ToList();
 
             //valida si la lista tiene datos
             if (list.Count > 0)

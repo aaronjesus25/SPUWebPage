@@ -25,6 +25,7 @@ namespace Data.Models
         public int UserId { get; set; }
         public string Nick { get; set; }
         public string Name { get; set; }
+        public string Pass { get; set; }
         public string Email { get; set; }
         public string Telephone { get; set; }
         public bool Boss { get; set; }
@@ -35,7 +36,6 @@ namespace Data.Models
         public bool RegStatus { get; set; }
         public System.DateTime RegTimeStamp { get; set; }
         public System.DateTime UpdateAt { get; set; }
-        public string Pass { get; set; }
         public int DepartmentId { get; set; }
     
         public virtual department department { get; set; }

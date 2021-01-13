@@ -61,20 +61,63 @@ namespace UsersManagement.Controllers
         [HttpGet]
         public JsonResult GetListCopy()
         {
-            // TODO: Add insert logic here
-            var list = UserObject.GetListCopy();
+            ResponseViewModel resp = new ResponseViewModel();
 
-            return Json(list, JsonRequestBehavior.AllowGet);
+            try
+            {
+                //obtiene el usuario logueado 
+                if (User.Identity.Name != null)
+                {
+
+                    var userId = Convert.ToInt32(User.Identity.Name.Split('|')[1]);
+                    var user = UserObject.GetById(userId);
+
+                    resp = UserObject.GetListCopy(user.DepartmentId);
+                }
+                else
+                {
+                    resp.Success = false;
+                    resp.Message = "Usuario no encontrado";
+                }
+            }
+            catch (Exception ex)
+            {
+                resp.Success = false;
+                resp.Message = ex.Message;
+            }
+
+            return Json(resp, JsonRequestBehavior.AllowGet);           
         }
 
         //Get: Users/GetList
         [HttpGet]
         public JsonResult GetListAuthorize()
         {
-            // TODO: Add insert logic here
-            var list = UserObject.GetListAutorize();
+            ResponseViewModel resp = new ResponseViewModel();
 
-            return Json(list, JsonRequestBehavior.AllowGet);
+            try
+            {
+                //obtiene el usuario logueado 
+                if (User.Identity.Name != null)
+                {
+                    var userId = Convert.ToInt32(User.Identity.Name.Split('|')[1]);
+                    var user = UserObject.GetById(userId);
+
+                    resp = UserObject.GetListAutorize(user.DepartmentId);
+                }
+                else
+                {
+                    resp.Success = false;
+                    resp.Message = "Usuario no encontrado";
+                }
+            }
+            catch (Exception ex)
+            {
+                resp.Success = false;
+                resp.Message = ex.Message;
+            }
+
+            return Json(resp, JsonRequestBehavior.AllowGet);           
         }
 
         // POST: Users/Create
@@ -117,7 +160,6 @@ namespace UsersManagement.Controllers
                 return View();
             }
         }
-
        
         // POST: Users/Delete/5
         [HttpPost]
@@ -156,7 +198,6 @@ namespace UsersManagement.Controllers
 
             return Json(resp, JsonRequestBehavior.AllowGet);
         }
-
 
         // POST: Users/Update/
         [HttpPost]

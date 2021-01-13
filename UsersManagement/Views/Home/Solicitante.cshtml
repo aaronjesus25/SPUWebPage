@@ -1,12 +1,17 @@
 ﻿@using System.Configuration;
 
-
 @{
     ViewBag.Title = "Administracion de solicitudes";
     Layout = "~/Views/Shared/_Layout.cshtml";
     var Version = ConfigurationManager.AppSettings["Version"];
 }
 
+@section css{
+    @Styles.Render("~/bundles/daterange")
+    @Styles.Render("~/Content/bootstrap-select/dist/css/bootstrap-select.min.css")
+}
+
+<!--Formmulario-->
 <div class="col-xs-12 col-sm-12 col-lg-12 col-md-12 pl-0 pr-0 ml-0 mr-0" id="frame_form">
     <form role="form" id="form">
         <div class="col-xs-12 col-sm-12 col-lg-12 col-md-12">
@@ -16,22 +21,29 @@
                     <label>SolicitudId</label>
                     <div class="right-inner-addon">
                         <i class="fa fa-exclamation-circle"></i>
-                        <input type="text" class="form-control" autocomplete="off" disabled="disabled" id="SolicitudId" name="SolicitudId" />
+                        <input type="text" class="form-control" autocomplete="off" disabled="disabled" id="RequestId" name="RequestId" />
                     </div>
                 </div>
+
+                <div class="form-group col-xs-12 col-sm-12 col-md-4 col-ls-4 ocultar">
+                    <label>UserId</label>
+                    <div class="right-inner-addon">
+                        <i class="fa fa-exclamation-circle"></i>
+                        <input type="text" class="form-control" autocomplete="off" disabled="disabled" id="UserId" name="UserId" value="@ViewBag.UserId" />
+                    </div>
+                </div>
+
                 <div class="form-group col-xs-12 col-sm-12 col-md-4 col-lg-4 col-ls-4">
                     <label for="conceptoId">Concepto solicitud</label>
                     <div class="right-inner-addon">
-                        <select name="ConceptId" id="ConceptId" class="form-control">
-                           
-                        </select>
+                        <select name="ConceptId" id="ConceptId" class="form-control"></select>
                     </div>
-                </div>               
+                </div>
                 <div class="form-group col-xs-12 col-sm-12 col-md-4 col-lg-4 col-ls-4">
                     <table id="myTable" class=" table order-list">
                         <thead>
                             <tr>
-                                <td>Escribe la pregunta</td>                              
+                                <td>Escribe la pregunta</td>
                             </tr>
                         </thead>
                         <tbody>
@@ -39,7 +51,7 @@
                                 <td class="col-sm-10">
                                     <input type="text" name="name" class="form-control" />
                                 </td>
-                               
+
                                 <td class="col-sm-2">
                                     <a class="deleteRow"></a>
                                 </td>
@@ -48,7 +60,7 @@
                         <tfoot>
                             <tr>
                                 <td colspan="2" style="text-align: left;">
-                                    <input type="button" class="btn btn-lg btn-block " id="addrow" value="Agregar pregunta" />
+                                    <input type="button" class="btn btn-lg btn-block" id="addrow" value="Agregar pregunta" />
                                 </td>
                             </tr>
                             <tr></tr>
@@ -57,24 +69,20 @@
                 </div>
 
                 <div class="form-group col-xs-12 col-sm-12 col-md-4 col-lg-4 col-ls-4">
-                    <label for="AutorizadorId">Autorizador</label>
+                    <label for="AuthorizeId">Autorizador</label>
                     <div class="right-inner-addon">
-                        <select name="AutorizadorId" id="AutorizadorId" class="form-control">
-                           
-                        </select>
+                        <select name="AuthorizeId" id="AuthorizeId" class="form-control"></select>
                     </div>
 
                     <br />
 
-                    <label for="CopiaId">Copia</label>
+                    <label for="CopyId">Copia</label>
                     <div class="right-inner-addon">
-                        <select name="CopiaId" id="CopiaId" class="form-control">
-                            
-                        </select>
+                        <select name="CopyId" id="CopyId" class="form-control"></select>
                     </div>
 
                     <br />
-                </div>               
+                </div>
             </div>
         </div>
 
@@ -85,16 +93,49 @@
     </form>
 </div>
 
+<!--Botones de operaciones-->
 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
     <div id="butonsoperations">
         <div class="form-group pull-left">
             <button type="button" class="btn btn-success" id="checkall"><i class="fa fa-list"></i> Selec. Todos</button>
             <button type="button" class="btn btn-success" id="create_modify"><i class="fa fa-male"></i> Crear</button>
             <button type="button" class="btn btn-danger" id="delete"><i class="fa fa-remove"></i> Eliminar</button>
-        </div>        
+        </div>
     </div>
 </div>
 
+<!--Filtro de datos-->
+<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+    <div class="row">
+        <div class="form-group col-xs-12 col-sm-12 col-md-4 col-lg-4">
+            <label for="dateTimePickerStart">Fecha inicio</label>
+            <input type="text" class="form-control" id="dateTimePickerStart" placeholder="Seleccione Fecha">
+        </div>
+        <div class="form-group col-xs-12 col-sm-12 col-md-4 col-lg-4">
+            <label for="dateTimePickerEnd">Fecha fin</label>
+            <input type="text" class="form-control" id="dateTimePickerEnd" placeholder="Seleccione Fecha">
+        </div>
+        <div class="form-group col-xs-12 col-sm-12 col-md-4 col-lg-4">
+            <label for="Status">Status</label>
+            <select class="form-control" id="Status" name="Status">
+                <option value="0">Solicitado</option>
+                <option value="1">Aprobado</option>
+                <option value="2">Autorizado</option>
+                <option value="3">Rechazado</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <div class="form-group pull-right">
+                <button type="submit" class="btn btn-success" id="listado" onclick="List();"><i class="fa fa-search"></i> Buscar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--Tabla de datos-->
 <div class="col-xs-12 col-sm-12 col-md-12 col-ls-12" id="frame_table">
     <div class="panel panel-primary">
         <div class="panel-heading">
@@ -107,10 +148,16 @@
                 <thead>
                     <tr>
                         <th id="html" data-dynatable-column="html"></th>
+                        <th class="ocultar" id="RequestId" data-dynatable-column="RequestId">RequestId</th>
                         <th class="ocultar" id="UserId" data-dynatable-column="UserId">Clave</th>
-                        <th id="Nick" data-dynatable-column="Nick">Usuario</th>
-                        <th id="Name" data-dynatable-column="Name">Solicitud</th>
-                        <th id="Email" data-dynatable-column="Email">Status</th>
+                        <th class="ocultar" id="ConceptId" data-dynatable-column="ConceptId">ConceptId</th>
+                        <th class="ocultar" id="AuthorizeId" data-dynatable-column="AuthorizeId">AuthorizeId</th>
+                        <th class="ocultar" id="CopyId" data-dynatable-column="CopyId">CopyId</th>
+                        <th id="UserName" data-dynatable-column="UserName">Usuario</th>
+                        <th id="ConceptName" data-dynatable-column="ConceptName">Solicitud</th>
+                        <th id="CreatedAt" data-dynatable-column="CreatedAt">Fecha</th>
+                        <th id="StatusName" data-dynatable-column="StatusName">Status</th>
+                        <th id="btnQuestions" data-dynatable-column="btnQuestions"></th>
                     </tr>
                 </thead>
             </table>
@@ -118,7 +165,33 @@
     </div>
 </div>
 
+<!-- Modal Questions -->
+<div id="myModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Preguntas de la solicitud</h4>
+            </div>
+            <div class="modal-body">
+                <div id="contentmodal"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
 @section Scripts {
+    @Scripts.Render("~/Content/daterangepicker/moment.min.js")
+    @Scripts.Render("~/Content/daterangepicker/es.js")
+    @Scripts.Render("~/Content/daterangepicker/daterangepicker.js")
+    @Scripts.Render("~/Content/bootstrap-select/dist/js/bootstrap-select.min.js")
     @Scripts.Render("~/Content/jsmethods/manager.js?version=" + Version)
     @Scripts.Render("~/Content/jsmethods/solicitante.js?version=" + Version)
 }

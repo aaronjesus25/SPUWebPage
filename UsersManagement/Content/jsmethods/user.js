@@ -15,8 +15,7 @@ $(document).ready(function () {
     forms.ShowForm(true);//Enable
     forms.DeleteRowArray("/Users/Delete", List);
     $('#save').click(function (e) {
-        e.preventDefault();
-        isvalidform = true;
+        e.preventDefault();       
         Save();
     });
 
@@ -40,42 +39,47 @@ function SelectedCheck() {
 //validar formulario
 function ValidateForm() {
    
-    $("#form").validate({
-        rules: {
-            "Name": {
-                required: true,
-                minlength: 2,
-                maxlength: 100
-            },
-            "Nick": {
-                required: true,
-                minlength: 8,
-                maxlength: 20
-            }
-        },
-        messages: {
-            "Name": {
-                required: "Indique su nombre",
-                minlength: "La longitud del nombre debe contener al menos 2 caracteres",
-                maxlength: "La longitud del nombre no debe exceder los 100 carácteres"
-            },
-            "Nick": {
-                required: "Indique su usuario",
-                minlength: "La longitud del nombre debe contener al menos 8 caracteres",
-                maxlength: "La longitud del nombre no debe exceder los 20 carácteres"
-            }
-        },
-        errorClass: "error",
-        errorElement: "span",
-        submitHandler: function () {
-            isvalidform = $("#form").valid();
-            Save();
-        }
-    });
-}
+    if ($('#Name').val() === undefined || $('#Name').val() === null || $('#Name').val() === '') {
+        swal('Campo obligatorio', 'Debe ingresar un nombre');
+        return false;
+    }
+
+    if ($('#Nick').val() === undefined || $('#Nick').val() === null || $('#Nick').val() === '') {
+        swal('Campo obligatorio', 'Debe ingresar un nombre de usuario');
+        return false;
+    }
+
+    if ($('#DepartmentId').val() === undefined || $('#DepartmentId').val() === null || $('#DepartmentId').val() === '0') {
+        swal('Campo obligatorio', 'Debe seleccionar un departamento');
+        return false;
+    }
+
+    if ($('#Type').val() === undefined || $('#Type').val() === null) {
+        swal('Campo obligatorio', 'Debe seleccionar una tipo de usuario');
+        return false;
+    }
+
+    if ($('#Email').val() === undefined || $('#Email').val() === null || $('#Email').val() === '') {
+        $('#Email').val(' ')
+    }
+
+    if ($('#Telephone').val() === undefined || $('#Telephone').val() === null || $('#Telephone').val() === '') {
+        $('#Telephone').val('0')
+    }
+
+    if ($('#Pass').val() !== $('#Pass2').val()) {
+        swal('Contraseña incorrecta', 'Las contraseñas no coinciden');
+        return false;
+    }
+
+    return true;  
+};
 
 //guardar informacion
 function Save() {
+
+    isvalidform = ValidateForm();
+
     if (isvalidform) {
         var operation = "save";
         var values = forms.getInputsFormValues();

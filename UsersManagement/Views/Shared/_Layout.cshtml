@@ -4,7 +4,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - Mi aplicación ASP.NET</title>
+    <title>@ViewBag.Title - CRM</title>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css" rel="stylesheet" />
@@ -13,6 +13,11 @@
     @Styles.Render("~/Content/dynatable/jquery.dynatable.css")
     @Styles.Render("~/Content/css")
     @Styles.Render("~/Content/Site.css")
+    @RenderSection("css", false)
+
+    @{
+        string admin = User.Identity.Name.Split('|')[2];
+    }
 </head>
 <body>
     <!-- Menu vertical APM -->
@@ -43,18 +48,26 @@
                                 </a>
                                 <div class="collapse" id="toggleDemo0" style="height: 0px;">
                                     <ul class="nav nav-list">
-                                        <li><a href="#">Perfil</a></li>
-                                        <li>@Html.ActionLink("Configuracion", "LogOut", "Login")</li>
+                                        @*<li><a href="#">Perfil</a></li>
+                                        <li>@Html.ActionLink("Configuracion", "LogOut", "Login")</li>*@
                                         <li>@Html.ActionLink("Cerrar Sesion", "LogOut", "Login")</li>
                                     </ul>
                                 </div>
                             </li>
 
-                            <li> <a href="/Home/Index"><span class="glyphicon glyphicon-home"></span> &nbsp; Inicio </a></li>
-                            <li><a href="/Users/Register"><span class="glyphicon glyphicon-user"></span> &nbsp; Usuarios </a></li>
-                            <li><a href="/Users/Permisos"><span class="glyphicon glyphicon-lock"></span> &nbsp; Permisos</a></li>
-                            <li><a href="/Departments/Index"><span class="glyphicon glyphicon-list"></span> &nbsp; Departamentos</a></li>
-                            <li><a href="/Concepts/Index"><span class="glyphicon glyphicon-info-sign"></span> &nbsp; Conceptos</a></li>
+                            @if (admin == "1")
+                            {
+                                <li> <a href="/Home/Index"><span class="glyphicon glyphicon-home"></span> &nbsp; Inicio </a></li>
+                                <li><a href="/Users/Register"><span class="glyphicon glyphicon-user"></span> &nbsp; Usuarios </a></li>
+                                <li><a href="/Users/Permisos"><span class="glyphicon glyphicon-lock"></span> &nbsp; Permisos</a></li>
+                                <li><a href="/Departments/Index"><span class="glyphicon glyphicon-list"></span> &nbsp; Departamentos</a></li>
+                                <li><a href="/Concepts/Index"><span class="glyphicon glyphicon-info-sign"></span> &nbsp; Conceptos</a></li>
+                            }
+                            else
+                            {
+                                <li> <a href="/Home/Index"><span class="glyphicon glyphicon-home"></span> &nbsp; Inicio </a></li>
+                            }
+
                             @*<li>
                                 <a href="#" data-toggle="collapse" data-target="#toggleDemo" data-parent="#sidenav01" class="collapsed">
                                     <span class="glyphicon glyphicon-cloud"></span> Submenu 1 <span class="caret pull-right"></span>

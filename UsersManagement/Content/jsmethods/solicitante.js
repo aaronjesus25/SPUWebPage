@@ -13,21 +13,21 @@ $(document).ready(function () {
     dynatable = $(idTable).dynatable().bind('dynatable:afterUpdate', SetChecked).data('dynatable');
     forms.Init();
     forms.HideForm();
-    forms.ShowForm(true);//Enable
-    //forms.DeleteRowArray("/Users/Delete", List);
+    forms.ShowForm(RequestUpdate);//Enable
+    forms.DeleteRowArray("/Requests/Delete", List);
     $('#save').click(function (e) {
         e.preventDefault();
-        isvalidform = true;
         Save();
     });
 
     band = false;
 
+    InitializeDatePicker()
     QuestionsSet();
     FillAutorize();
     FillCopy();
     FillConcepts();
-    //List();
+    List();
 });
 
 //evento seleccionar registro
@@ -38,60 +38,59 @@ function SelectedCheck() {
     } else {
         forms.ChangeTextButtonChekAll(false, "#checkall");
     }
-    forms.getSelectedValues();
+    forms.getSelectedValues();  
 }
 
 //validar formulario
 function ValidateForm() {
 
-    $("#form").validate({
-        rules: {
-            "Name": {
-                required: true,
-                minlength: 2,
-                maxlength: 100
-            },
-            "Nick": {
-                required: true,
-                minlength: 8,
-                maxlength: 20
-            }
-        },
-        messages: {
-            "Name": {
-                required: "Indique su nombre",
-                minlength: "La longitud del nombre debe contener al menos 2 caracteres",
-                maxlength: "La longitud del nombre no debe exceder los 100 carácteres"
-            },
-            "Nick": {
-                required: "Indique su usuario",
-                minlength: "La longitud del nombre debe contener al menos 8 caracteres",
-                maxlength: "La longitud del nombre no debe exceder los 20 carácteres"
-            }
-        },
-        errorClass: "error",
-        errorElement: "span",
-        submitHandler: function () {
-            isvalidform = $("#form").valid();
-            Save();
-        }
-    });
+    if ($('#ConceptId').val() === undefined || $('#ConceptId').val() === null || $('#ConceptId').val() === '0') {
+        swal('Campo obligatorio', 'Debe seleccionar un concepto');       
+        return false;
+    }
+
+    if ($('#AuthorizeId').val() === undefined || $('#AuthorizeId').val() === null || $('#AuthorizeId').val() === '0') {
+        swal('Campo obligatorio', 'Debe seleccionar un Autorizador');       
+        return false;
+    }
+
+    if ($('#CopyId').val() === undefined || $('#CopyId').val() === null || $('#CopyId').val() === '0') {
+        swal('Campo obligatorio', 'Debe seleccionar una copia');       
+        return false;
+    }
+
+    if ($("input[name='name']").val() === undefined || $("input[name='name']").val() === null || $("input[name='name']").val() === '') {
+        swal('Campo obligatorio', 'Debe escribir una pregunta');       
+        return false;
+    }
+
+    return true;
 }
 
 //guardar informacion
 function Save() {
+
+    //valida los datos del formmulario
+    isvalidform = ValidateForm();
+
+    //si los datos son validos
     if (isvalidform) {
+
+        //variables locales
         var operation = "save";
         var values = forms.getInputsFormValues();
         var questions = [];
 
-
+        //recorre las peticiones del solicitante
         for (var i = 0; i <= counter; i++) {
-           
+
+            //obtiene la solicitud
             var question = i === 0 ? $("input[name='name']").val() : $("input[name='name" + (i -1) + "']" ).val();
 
+            //valida informacion
             var isValid = ValidateQuestion(question);
 
+            //si es valido guarda la info
             if (isValid) {
                 paramQuestion = {
                     Text: question
@@ -102,25 +101,36 @@ function Save() {
         }
 
         values.Questions = questions;
-        console.log(values);
 
-        //if ($('#save').hasClass('btn-warning')) {
-        //    operation = "save_modify";
-        //    forms.ExecuteAjax("/Requests/Update", List, values);
-        //}
-        //else {
-        //    values["UserId"] = '';
-        //    forms.ExecuteAjax("/Requests/SignIn", List, values);
-        //}
+        if ($('#save').hasClass('btn-warning')) {
+            operation = "save_modify";
+
+            console.log(values);
+            forms.ExecuteAjax("/Requests/Update", List, values);
+        }
+        else {
+            values["RequestId"] = '';
+            forms.ExecuteAjax("/Requests/Create", List, values);
+        }
     }
 }
 
 //GET LIST 
 function List() {
+
+    //parametros
+    var data = {
+        DateStart: $("#dateTimePickerStart").val(),
+        DateEnd: $("#dateTimePickerEnd").val(),
+        TypeRequest: $('#Status').val()       
+    };
+
+    //peticion de busqueda 
     $.ajax({
-        type: 'GET',
+        type: 'POST',
         async: true,
-        url: '/Users/GetList',
+        data: data,
+        url: '/Requests/GetListPetitioner',
         beforeSend: function (xhr) {
             $.spin('true');
         }
@@ -145,6 +155,7 @@ function BuidList(data) {
 
         for (var i = 0; i < myRecords.length; i++) {
             myRecords[i]["html"] = "<input type='checkbox' class='case' name='case[]' onclick='SelectedCheck();'/>"
+            myRecords[i]["btnQuestions"] = "<input type='button' class='btn btn-primary btn-block' value='Preguntas' name='showquestions' id='showquestions' onclick='ShowQuestions( " + myRecords[i]["RequestId"] + " );'/>"
         }
 
         dynatable.settings.dataset.originalRecords = myRecords;
@@ -180,11 +191,11 @@ function QuestionsSet() {
 
         //valida que solo se registren 5 preguntas
         if (counter <= 3) {
-            var newRow = $("<tr>");
+            var newRow = $("<tr class='autogenerate'>");
             var cols = "";
 
             cols += '<td><input type="text" class="form-control" name="name' + counter + '"/></td>';
-            cols += '<td><input type="button" class="ibtnDel btn btn-md btn-danger "  value="Delete"></td>';
+            cols += '<td><input type="button" class="ibtnDel btn btn-md btn-danger "  value="Eliminar"></td>';
 
             newRow.append(cols);
 
@@ -201,27 +212,98 @@ function QuestionsSet() {
     });
 }
 
+//prepara la solicitud para ser editada
+function RequestUpdate() {
+
+    //si no hay datos seleccionados limpia y sale 
+    if (forms.SelectedValues.length === 0) {
+        resetQuestions();
+        return false;
+    }
+
+    //obtiene el id de la solicitud seleccionada
+    var reqId = forms.SelectedValues[0]['RequestId']
+
+    //parametros
+    var values = {
+        RequestId: reqId
+    }
+
+    //ejecutala peticion para recuperar las preguntas  
+    forms.ExecuteAjax("/Requests/GetById", QuestionsUpdate, values, false);
+}
+
+//tabla de preguntas para solicitudes
+function QuestionsUpdate(request) {   
+
+    //valida los datos
+    if (request !== null && request.Data !== undefined && request.Data !== null) {
+
+        //reseta el contenedor de las preguntas 
+        resetQuestions();
+
+        //obtiene la solicitud
+        var dataResponse = request.Data;
+      
+        //varifica datos de la solicitud
+        for (var i = 0; i < dataResponse.length; i++) {
+
+            //obtengo las preguntas 
+            var questionsArray = dataResponse[i]['QuestionsVM'];
+
+            //contador de preguntas 
+            counter = questionsArray.length;
+
+            //llena la lista de datos
+            for (var i = 0; i < counter; i++) {
+
+                if (i === 0) {
+                    $('input[name ="name"]').val(questionsArray[i]['Text']);
+                }
+                else {
+                    var newRow = $("<tr class='autogenerate'>");
+                    var cols = "";
+
+                    cols += '<td><input type="text" class="form-control" name="name' + i + '" value="' + questionsArray[i]['Text'] + '" /></td>';
+                    cols += '<td><input type="button" class="ibtnDel btn btn-md btn-danger " value="Eliminar"></td>';
+
+                    newRow.append(cols);
+
+                    $("table.order-list").append(newRow);
+                }
+            }   
+        }
+    }      
+}
+
+//resetea la tabla de preguntas 
+function resetQuestions() {
+    $('.autogenerate').remove();
+    counter = 0;
+}
+
 /*Llenar drop departamentos*/
 function FillAutorize() {
 
     //llena el combo de datos
-    forms.FillCombo("AutorizadorId", 'Name', 'UserId', '/Users/GetListAuthorize', '');
+    forms.FillCombo("AuthorizeId", 'Name', 'UserId', '/Users/GetListAuthorize', '');
 }
 
 /*Llenar drop usuarios de tipo copia*/
 function FillCopy() {
 
     //llena el combo de datos
-    forms.FillCombo("CopiaId", 'Name', 'UserId', '/Users/GetListCopy', '');
+    forms.FillCombo("CopyId", 'Name', 'UserId', '/Users/GetListCopy', '');
 }
 
-/*Llenar drop usuarios de tipo copia*/
+/*Llenar drop de conceptos*/
 function FillConcepts() {
 
     //llena el combo de datos
     forms.FillCombo("ConceptId", 'Nombre', 'ConceptId', '/Concepts/GetList', '');
 }
 
+//valida la pregunta
 function ValidateQuestion(text) {
     if (text === undefined || text === '' || text === null) {
         return false;
@@ -229,4 +311,91 @@ function ValidateQuestion(text) {
     else {
         return true;
     }
+}
+
+//muestra las preguntas de la solicitud
+function ShowQuestions(reqId) {
+
+    //parametros
+    var values = {
+        RequestId: reqId
+    }
+
+    //ejecutala peticion para recuperar las preguntas  
+    forms.ExecuteAjax("/Requests/GetById", ModalQuestions, values, false);
+}
+
+//arma la ventana modal de preguntas 
+function ModalQuestions(data) {
+
+    //valida los datos
+    if (data !== null && data.Data !== undefined && data.Data !== null) {
+
+        //obtiene las preguntas
+        var dataResponse = data.Data;
+
+        //crea la  lista 
+        var htmlModal = '<ul class="list-group" id="myList">';
+
+        //llena la lista de datos
+        for (var i = 0; i < dataResponse.length; i++) {
+
+            var questionsArray = dataResponse[i]['QuestionsVM'];
+
+            for (var c = 0; c < questionsArray.length; c++) {
+                htmlModal += '<li class="list-group-item"> ' + questionsArray[c].Text + ' </li>';
+            }
+
+        }
+
+        //cierre de la lista
+        htmlModal += '</ul> ';
+
+        //envia los datos 
+        $('#contentmodal').html(htmlModal);
+        $('#myModal').modal('show');
+    }
+}
+
+//init datetimes
+function InitializeDatePicker() {
+    $datepicker = $('#dateTimePickerStart');
+    $dateEnd = $('#dateTimePickerEnd');
+    $datepicker.daterangepicker({
+        timePicker: true,
+        autoUpdateInput: false,
+        singleDatePicker: true,
+        locale: {
+            format: 'DD/MM/YYYY h:mm A'
+        }
+    });
+    $dateEnd.daterangepicker({
+        timePicker: true,
+        singleDatePicker: true,
+        autoUpdateInput: false,
+        locale: {
+            format: 'DD/MM/YYYY h:mm A'
+        }
+    });
+    var dt = new Date();
+    var start = dt.getDate() + '/' + ((dt.getMonth() + 1) <= 9 ? '0' + (dt.getMonth() + 1) : (dt.getMonth() + 1)) + '/' + dt.getFullYear() + ' 12:00 AM';
+    $datepicker.val(start);
+    $datepicker.data('daterangepicker').setStartDate(start);
+    var end = dt.getDate() + '/' + ((dt.getMonth() + 1) <= 9 ? '0' + (dt.getMonth() + 1) : (dt.getMonth() + 1)) + '/' + dt.getFullYear() + ' 11:59 PM';
+    $dateEnd.val(end);
+    $dateEnd.data('daterangepicker').setStartDate(end);
+    //
+    $datepicker.on('hide.daterangepicker', function (ev, picker) {
+        $(this).val(picker.startDate.format('DD/MM/YYYY h:mm A'));
+    });
+    $datepicker.on('apply.daterangepicker', function (ev, picker) {
+        $(this).val(picker.startDate.format('DD/MM/YYYY h:mm A'));
+    });
+    //
+    $dateEnd.on('hide.daterangepicker', function (ev, picker) {
+        $(this).val(picker.startDate.format('DD/MM/YYYY h:mm A'));
+    });
+    $dateEnd.on('apply.daterangepicker', function (ev, picker) {
+        $(this).val(picker.startDate.format('DD/MM/YYYY h:mm A'));
+    });
 }

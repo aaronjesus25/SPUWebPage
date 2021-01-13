@@ -689,23 +689,9 @@ var Forms = function (idButtonView, idTable, idDivTable, idForm, idDivForm) {
      * @returns {} 
      */
     self.SetInfoToForm = function () {
-        debugger;
+
         var values = self.SelectedValues[0];
-        var $selectedGroup = null;
-        var $selectDepto = null;
-        var $selectSubClasificacion = null;
-        var $CheckGeocerca = null;
-        var $CheckEmail = null;
         var _idForm = self.idForm + " :input";
-        $selectedGroup = $("#group");
-
-        $CheckEmail = $("#emailAlerts");
-        $CheckGeocerca = $("#GenerarAlerta");
-        $selectDepto = $("#Clasificacion");
-        $selectSubClasificacion = $("#SubClasificacion");
-
-
-        $img_select = $("#img_vehicles");
         var $inputs = $(_idForm);
 
         self.InputsValues = {};
@@ -713,118 +699,13 @@ var Forms = function (idButtonView, idTable, idDivTable, idForm, idDivForm) {
         $inputs.each(function () {
             if (this.name) {
                 $(this).val(values[this.name]);
-            }
-
-            if (this.name == 'FechaAdquisicion') {
-
-                var date = values['FechaAdquisicionView'].split('/');
-
-                $(this).val(date[2] + '/' + date[1] + '/' + date[0]);
-
-                debugger;
-            }
-
-            if (this.name == 'FechaVencimiento') {
-
-                var date = values['FechaVencimientoView'].split('/');
-
-                $(this).val(date[2] + '/' + date[1] + '/' + date[0]);
-
-            }
-
-            if (this.name == "taller") {
-                var x = values[this.name];
-                if (x === "true") {
-                    document.getElementById(this.name).checked = true;
-                } else {
-                    document.getElementById(this.name).checked = false;
-                }
-            }
+            }           
         });
 
         if (self.selectedMultipleValues != null) {
             self.SetMultipleSelected();
-        }
-        if (!_.isUndefined($img_select) && !_.isNull($img_select) && !_.isEmpty($img_select) && typeof $img_select.selectator === "function") {
-            $img_select.val(values["ImagenVehiculo"]).prop('selected', true);
-            $img_select.selectator('refresh');
-        }
-        if (!_.isUndefined($selectedGroup) && !_.isNull($selectedGroup) && !_.isEmpty($selectedGroup)) {
-            $selectedGroup.val(values["GrupoUid"]).prop('selected', true);
-        }
-        /*Clasificacion*/
-        if (!_.isUndefined($selectClasificacion) && !_.isNull($selectClasificacion) && !_.isEmpty($selectClasificacion)) {
-            $selectClasificacion.val(values["ClasificacionUid"]).prop('selected', true);
-            // $selectClasificacion.val(values["ClasificacionUID"]).prop('selected', true);
-        }
-        /*SSubClasificacion*/
-        if (!_.isUndefined($selectSubClasificacion) && !_.isNull($selectSubClasificacion) && !_.isEmpty($selectSubClasificacion)) {
-            $selectSubClasificacion.val(values["SubClasifiacionUID"]).prop('selected', true);
-        }
-
-        if (!_.isUndefined($CheckGeocerca) && !_.isNull($CheckGeocerca) && !_.isEmpty($CheckGeocerca)) {
-
-            if (values["GenerarAlerta"] == "true" || values["GenerarAlerta"] == "True") {
-                $CheckGeocerca.prop('checked', true);
-            }
-            else {
-                $CheckGeocerca.prop('checked', false);
-            }
-
-        }
-
-        //  emailAlerts;
-
-        if (!_.isUndefined($CheckEmail) && !_.isNull($CheckEmail) && !_.isEmpty($CheckEmail)) {
-
-            if (values["SendEmail"] == "true" || values["SendEmail"] == "True") {
-                $CheckEmail.prop('checked', true);
-            }
-            else {
-                $CheckEmail.prop('checked', false);
-            }
-
-        }
-        var valuesd = values["DiasVisita"];
-
-        if (!_.isUndefined(valuesd) && !_.isNull(valuesd) && !_.isEmpty(valuesd)) {
-
-            $dias = $('#dias-checks input:checkbox');
-            $label = $("#dias-checks label");
-            $dias.prop('checked', false);
-
-
-            valuesd = valuesd.split(",");
-            valuesd = _.without(valuesd, "");
-
-
-            $("#dias-checks label").each(function (a, b) {
-                var $child = $(this).children();
-                var m = $child.val();
-                if (_.find(valuesd, function (dia) { return dia === m; })) {
-                    $child.prop('checked', true);
-                    $(this).addClass("active");
-                }
-
-            });
-        }
-
-
-
-
-
+        }               
     };
-
-
-
-
-
-
-
-
-
-
-
 
     self.Save = function (operation, endPoint, callback, values) {
         values = values || self.getInputsFormValues();

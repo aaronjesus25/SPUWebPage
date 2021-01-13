@@ -22,8 +22,10 @@ namespace UsersManagement.Controllers
             if (User.Identity.Name != null)
             {
                 //obtiene el usuario logueado 
-                userId = Convert.ToInt32(User.Identity.Name.Split('|')[1]);
+                userId = Convert.ToInt32(User.Identity.Name.Split('|')[1]);                
                 var user = UserObject.GetById(userId);
+                ViewBag.UserId = userId;
+                ViewBag.UserType = user.Type;
 
                 //acceso a la vista principal por tipo y rol de usuario
                 if (user.Type == 1)

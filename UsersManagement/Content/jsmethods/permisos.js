@@ -9,7 +9,7 @@ var utils = null;
 
 //init
 $(document).ready(function () {
-    utils = new Utils();
+    utils = new Utils("my-final-table", "frame_table");
     utils.Init();
 
     dynatable = $(idTable).dynatable().data('dynatable');

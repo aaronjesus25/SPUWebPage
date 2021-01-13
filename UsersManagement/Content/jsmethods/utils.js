@@ -1,7 +1,19 @@
 ﻿
-var Utils = function () {
+var Utils = function (idTable, idDivTable) {
 
     var self = this;
+
+    self.operation = 'create';
+    self.SelectedValues = [];
+    self.isvisibleForm = false;
+    self.IsvisibleTable = true;
+    self.selectall = false;
+    self.selectedMultipleValues = null;
+    self.deselectedMultipleValues = null;
+    self.my_select_groups = "#my-select-groups";
+    self.idTable = idTable !== "undefined" && idTable.indexOf("#") === 0 ? idTable : "#" + idTable;
+    self.idDivTable = idDivTable !== "undefined" && idDivTable.indexOf("#") === 0 ? idDivTable : "#" + idDivTable;
+
 
     /**
     * Inicializador de propiedades
@@ -9,6 +21,8 @@ var Utils = function () {
     */
     self.Init = function () {
         self.InitSpinner();
+        self.ButtonCheckAll();
+        self.getSelectedValues();
     };
 
     /**
@@ -145,5 +159,269 @@ var Utils = function () {
                 html: true
             });
         }
+    };
+
+    /**
+    * Función que devuelve un arreglo de objetos, los objetos contienen los valores de cada registro seleccionado
+    * en la tabla
+    * @returns {} 
+    */
+    self.getSelectedValues = function () {
+        var values = [];
+        var heads = $(self.idTable).find('tr').eq(0).find('th');
+        $.each($(self.idTable + " input:checked"), function (y, d, c) {
+            $(this).parents('tr').each(function (a, b) {
+                var tdValues = {};
+                $(this).find('td').each(function (col, b) {
+                    //values[this.data-dynatable-column] = $(this).val();
+                    var txt = $(this).text();
+                    var band = heads.eq(col).data().dynatableColumn.search(/^Imagen+/);
+
+                    if (band !== -1) {
+                        var img_value = $(this).html();
+                        var regex1 = '<img height="16" width="32" src="';
+                        var x = img_value.indexOf(regex1);
+                        var y = img_value.indexOf('">');
+                        var img_substring = img_value.substring(regex1.length, y);
+                        tdValues[heads.eq(col).data().dynatableColumn] = img_substring;
+                    } else {
+                        if (txt) {
+                            tdValues[heads.eq(col).data().dynatableColumn] = txt;
+
+                        }
+                    }
+
+                });
+                values.push(tdValues);
+            });
+        });
+        self.SelectedValues = values;
+        self.ActiveButtons(values);
+        return values;
+    };
+
+    /**
+    * Activa o desactiva los botones del formulario dependiendo de la cantidad de registros seleccionados.
+    * Un registro se habilita modificar y eliminar, mas de un registro solo habilita el botón eliminar.
+    * @param {Array} values - Los valores seleccionados de la tabla. Arreglo de objetos 
+    * @returns {} 
+    */
+    self.ActiveButtons = function (values) {
+        var amount = values.length;
+        if (amount > 0) {
+           
+            $('#delete').removeClass('disabled');
+
+            if (amount > 1) {
+                $('#create_modify').addClass('disabled');
+                $('#checkall').removeClass('disabled');
+
+                self.VisibleButtonsOperations(true);
+
+            } else if (amount === 1) {
+                self.VisibleButtonsOperations(true);
+            }
+        } else {
+            self.VisibleButtonsOperations(false);
+        }
+    };
+
+    self.VisibleButtonsOperations = function (isVisible) {
+        if (isVisible) {
+            $("#delete").show(1000);
+            $("#create").show(1000);
+        } else {
+            $("#delete").hide(1000);
+            $("#create").hide(1000);
+        }
+    };
+
+    /**
+    * Función que cambia el texto del boton seleccionar checks
+    * @param {bool} isCheckAll 
+    * @param {string} idButtonCheckAll - identificador del boton para seleccionar todos los checks
+    * @returns {} 
+    */
+    self.ChangeTextButtonChekAll = function (isCheckAll, idButtonCheckAll) {
+        var $idButtonCheckAll = $(idButtonCheckAll);
+        $idButtonCheckAll.text("");
+        if (isCheckAll) {
+            $idButtonCheckAll.append("<i class='fa fa-list'></i> Deselec. Todos");
+        } else {
+            $idButtonCheckAll.append("<i class='fa fa-list'></i> Selec. Todos");
+        }
+
+        self.selectall = isCheckAll;
+    };
+
+    self.SelectCheckAll = function () {
+        var checkall = self.selectall;
+        if (checkall) {
+            checkall = false;
+        } else {
+            checkall = true;
+        }
+        $(self.idTable + ' input:checkbox').prop('checked', checkall);
+        self.getSelectedValues();
+
+        return checkall;
+    }
+
+    /**
+     * Función que activa el botón para seleccionar todos los checks de la tabla
+     * @param {string} idButtonCheckAll - identificador del boton 
+     */
+    self.ButtonCheckAll = function (idButtonCheckAll) {
+        idButtonCheckAll = idButtonCheckAll || "#checkall";
+        $(idButtonCheckAll).click(function () {
+            if ($(this).hasClass('disabled')) {
+                event.preventDefault();
+                return;
+            }
+            var ischeckall = self.SelectCheckAll(self.selectall);
+            self.selectall = ischeckall;
+            self.ChangeTextButtonChekAll(self.selectall, idButtonCheckAll);
+        });
+    };
+
+    /**
+    * Para utilizar esta función se debe tener instalado noty, para generar las alertas
+    * Genera una alerta en el top de la web
+    * @param {string} text 
+    * @param {string} type 
+    */
+    self.generateNotification = function (text, type) {
+        var layout = "top";
+        var theme = "defaultTheme";
+        var timeoutnoty = false;
+        var valuespeed = 0;
+        var closenotify = ["button"];
+        if (type !== "error") {
+            valuespeed = 3500;
+            timeoutnoty = true;
+            closenotify = [];
+        }
+        noty({
+            text: text,
+            type: type,
+            dismissQueue: true,
+            animation: {
+                open: { height: 'toggle' },
+                close: { height: 'toggle' },
+                easing: 'swing',
+                speed: valuespeed
+            },
+            timeout: timeoutnoty,
+            layout: layout,
+            theme: theme,
+            maxVisible: 1,
+            closeWith: closenotify
+        });
+    };
+
+    /**
+     * 
+     * @param {string} endPoint - url 
+     * @param {function} callback - función que se ejecuta si la petición tuvo éxito
+     * @param {object} values -  objeto formado con los datos del formulario, deben tener los mismos nombres que en el modelo
+     * @returns {} 
+     */
+    self.ExecuteAjax = function (endPoint, callback, values, noti = true) {
+        $.ajax({
+            type: 'POST',
+            data: values,
+            async: true,
+            url: endPoint,
+            beforeSend: function (xhr) {
+                if ($.spin !== null) {
+                    $.spin('true');
+                }
+            }
+        })
+            .done(function (data) {
+                if (typeof data !== "undefined" && data !== null) {
+                    var text = data.Message;
+                    if (data.Success == true) {
+                        if (noti !== false) {
+                            self.generatePopupAlert(text, "success");
+                        }
+                    }
+                    else {
+                        if (noti !== false) {
+                            self.generatePopupAlert(text, "warning");
+                        }
+                    }
+                    if (typeof callback === "function") {
+                        callback(data);
+                    }
+                }
+            })
+            .fail(function (data) {
+                self.generateNotification('No se han podido consumir los datos, verifique su conexión ' + data.responseText, "error");
+
+            })
+            .always(function (data) {
+                $.spin('false');
+            });
+    };
+
+    self.AjaxPdf = function (endPoint, nombre, values) {
+        var request = new XMLHttpRequest();
+        request.open('POST', endPoint, true);
+        request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
+        request.responseType = 'blob';
+        request.onloadstart = function () {
+            $.spin('true');
+        };
+        request.onloadend = function () {
+            $.spin('false');
+        };
+        request.onload = function () {
+            if (request.status === 200) {
+                var disposition = request.getResponseHeader('content-disposition');
+                var matches = /"([^"]*)"/.exec(disposition);
+                var filename = (matches !== null && matches[1] ? matches[1] : nombre + '.pdf');
+                var blob = new Blob([request.response], { type: 'application/pdf' });
+                var link = document.createElement('a');
+                link.href = window.URL.createObjectURL(blob);
+                link.download = filename;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            }
+        };
+        request.send(values);
+    };
+
+    self.AjaxExcel = function (endPoint, nombre, values) {
+        var request = new XMLHttpRequest();
+        request.open('POST', endPoint, true);
+        request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
+        request.responseType = 'blob';
+
+        request.onloadstart = function () {
+            $.spin('true');
+        };
+        request.onloadend = function () {
+            $.spin('false');
+        };
+        request.onload = function (e) {
+            if (this.status === 200) {
+                var blob = this.response;
+                if (window.navigator.msSaveOrOpenBlob) {
+                    window.navigator.msSaveBlob(blob, fileName);
+                }
+                else {
+                    var downloadLink = window.document.createElement('a');
+                    var contentTypeHeader = request.getResponseHeader("Content-Type");
+                    downloadLink.href = window.URL.createObjectURL(new Blob([blob], { type: contentTypeHeader }));
+                    downloadLink.download = nombre + ".xlsx";
+                    document.body.appendChild(downloadLink);
+                    downloadLink.click();
+                    document.body.removeChild(downloadLink);
+                }
+            }
+        };
+        request.send(values);
     };
 }

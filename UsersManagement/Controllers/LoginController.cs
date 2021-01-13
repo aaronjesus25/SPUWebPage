@@ -30,7 +30,7 @@ namespace UsersManagement.Controllers
 
             if (userAuthorized != null)
             {
-                FormsAuthentication.SetAuthCookie(string.Format("{0}|{1}", userAuthorized.Nick, userAuthorized.UserId), true);
+                FormsAuthentication.SetAuthCookie(string.Format("{0}|{1}|{2}", userAuthorized.Nick, userAuthorized.UserId, userAuthorized.Type), true);
                 return RedirectToAction("Index", "Home");
             }
             else

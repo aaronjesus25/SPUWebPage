@@ -45,11 +45,26 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="BouncyCastle.Crypto, Version=1.8.6.0, Culture=neutral, PublicKeyToken=0e99375e54769942">
+      <HintPath>..\packages\BouncyCastle.1.8.6.1\lib\BouncyCastle.Crypto.dll</HintPath>
+    </Reference>
+    <Reference Include="ClosedXML, Version=0.95.4.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\ClosedXML.0.95.4\lib\net46\ClosedXML.dll</HintPath>
+    </Reference>
+    <Reference Include="DocumentFormat.OpenXml, Version=2.7.2.0, Culture=neutral, PublicKeyToken=8fb06cb64d019a17, processorArchitecture=MSIL">
+      <HintPath>..\packages\DocumentFormat.OpenXml.2.7.2\lib\net46\DocumentFormat.OpenXml.dll</HintPath>
+    </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.0.0\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.0.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="ExcelNumberFormat, Version=1.0.10.0, Culture=neutral, PublicKeyToken=23c6f5d73be07eca, processorArchitecture=MSIL">
+      <HintPath>..\packages\ExcelNumberFormat.1.0.10\lib\net20\ExcelNumberFormat.dll</HintPath>
+    </Reference>
+    <Reference Include="itextsharp, Version=5.5.13.2, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
+      <HintPath>..\packages\iTextSharp.5.5.13.2\lib\itextsharp.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="MySql.Data, Version=8.0.16.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
@@ -63,6 +78,12 @@
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.IO.FileSystem.Primitives, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.IO.FileSystem.Primitives.4.0.1\lib\net46\System.IO.FileSystem.Primitives.dll</HintPath>
+    </Reference>
+    <Reference Include="System.IO.Packaging, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.IO.Packaging.4.0.0\lib\net46\System.IO.Packaging.dll</HintPath>
+    </Reference>
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -124,6 +145,7 @@
       <Private>True</Private>
       <HintPath>..\packages\Antlr.3.5.0.2\lib\Antlr3.Runtime.dll</HintPath>
     </Reference>
+    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform">
@@ -145,6 +167,9 @@
     </Compile>
     <Compile Include="Models\ResponseViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Utils\ExcelExport.cs" />
+    <Compile Include="Utils\PDFEvents.cs" />
+    <Compile Include="Utils\PDFUtils.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\alertify0\css\alertify-bootstrap-3.css" />
@@ -160,6 +185,72 @@
     <Content Include="Content\bootstrap-dropdown-hover\css\bootstrap-dropdownhover.min.css" />
     <Content Include="Content\bootstrap-dropdown-hover\js\bootstrap-dropdownhover.js" />
     <Content Include="Content\bootstrap-dropdown-hover\js\bootstrap-dropdownhover.min.js" />
+    <Content Include="Content\bootstrap-select\dist\css\bootstrap-select.css" />
+    <Content Include="Content\bootstrap-select\dist\css\bootstrap-select.min.css" />
+    <Content Include="Content\bootstrap-select\dist\js\bootstrap-select.js" />
+    <Content Include="Content\bootstrap-select\dist\js\bootstrap-select.min.js" />
+    <Content Include="Content\bootstrap-select\dist\js\i18n\defaults-ar_AR.js" />
+    <Content Include="Content\bootstrap-select\dist\js\i18n\defaults-ar_AR.min.js" />
+    <Content Include="Content\bootstrap-select\dist\js\i18n\defaults-bg_BG.js" />
+    <Content Include="Content\bootstrap-select\dist\js\i18n\defaults-bg_BG.min.js" />
+    <Content Include="Content\bootstrap-select\dist\js\i18n\defaults-cro_CRO.js" />
+    <Content Include="Content\bootstrap-select\dist\js\i18n\defaults-cro_CRO.min.js" />
+    <Content Include="Content\bootstrap-select\dist\js\i18n\defaults-cs_CZ.js" />
+    <Content Include="Content\bootstrap-select\dist\js\i18n\defaults-cs_CZ.min.js" />
+    <Content Include="Content\bootstrap-select\dist\js\i18n\defaults-da_DK.js" />
+    <Content Include="Content\bootstrap-select\dist\js\i18n\defaults-da_DK.min.js" />
+    <Content Include="Content\bootstrap-select\dist\js\i18n\defaults-de_DE.js" />
+    <Content Include="Content\bootstrap-select\dist\js\i18n\defaults-de_DE.min.js" />
+    <Content Include="Content\bootstrap-select\dist\js\i18n\defaults-en_US.js" />
+    <Content Include="Content\bootstrap-select\dist\js\i18n\defaults-en_US.min.js" />
+    <Content Include="Content\bootstrap-select\dist\js\i18n\defaults-es_CL.js" />
+    <Content Include="Content\bootstrap-select\dist\js\i18n\defaults-es_CL.min.js" />
+    <Content Include="Content\bootstrap-select\dist\js\i18n\defaults-eu.js" />
+    <Content Include="Content\bootstrap-select\dist\js\i18n\defaults-eu.min.js" />
+    <Content Include="Content\bootstrap-select\dist\js\i18n\defaults-fa_IR.js" />
+    <Content Include="Content\bootstrap-select\dist\js\i18n\defaults-fa_IR.min.js" />
+    <Content Include="Content\bootstrap-select\dist\js\i18n\defaults-fi_FI.js" />
+    <Content Include="Content\bootstrap-select\dist\js\i18n\defaults-fi_FI.min.js" />
+    <Content Include="Content\bootstrap-select\dist\js\i18n\defaults-fr_FR.js" />
+    <Content Include="Content\bootstrap-select\dist\js\i18n\defaults-fr_FR.min.js" />
+    <Content Include="Content\bootstrap-select\dist\js\i18n\defaults-hu_HU.js" />
+    <Content Include="Content\bootstrap-select\dist\js\i18n\defaults-hu_HU.min.js" />
+    <Content Include="Content\bootstrap-select\dist\js\i18n\defaults-id_ID.js" />
+    <Content Include="Content\bootstrap-select\dist\js\i18n\defaults-id_ID.min.js" />
+    <Content Include="Content\bootstrap-select\dist\js\i18n\defaults-it_IT.js" />
+    <Content Include="Content\bootstrap-select\dist\js\i18n\defaults-it_IT.min.js" />
+    <Content Include="Content\bootstrap-select\dist\js\i18n\defaults-ko_KR.js" />
+    <Content Include="Content\bootstrap-select\dist\js\i18n\defaults-ko_KR.min.js" />
+    <Content Include="Content\bootstrap-select\dist\js\i18n\defaults-lt_LT.js" />
+    <Content Include="Content\bootstrap-select\dist\js\i18n\defaults-lt_LT.min.js" />
+    <Content Include="Content\bootstrap-select\dist\js\i18n\defaults-nb_NO.js" />
+    <Content Include="Content\bootstrap-select\dist\js\i18n\defaults-nb_NO.min.js" />
+    <Content Include="Content\bootstrap-select\dist\js\i18n\defaults-nl_NL.js" />
+    <Content Include="Content\bootstrap-select\dist\js\i18n\defaults-nl_NL.min.js" />
+    <Content Include="Content\bootstrap-select\dist\js\i18n\defaults-pl_PL.js" />
+    <Content Include="Content\bootstrap-select\dist\js\i18n\defaults-pl_PL.min.js" />
+    <Content Include="Content\bootstrap-select\dist\js\i18n\defaults-pt_BR.js" />
+    <Content Include="Content\bootstrap-select\dist\js\i18n\defaults-pt_BR.min.js" />
+    <Content Include="Content\bootstrap-select\dist\js\i18n\defaults-pt_PT.js" />
+    <Content Include="Content\bootstrap-select\dist\js\i18n\defaults-pt_PT.min.js" />
+    <Content Include="Content\bootstrap-select\dist\js\i18n\defaults-ro_RO.js" />
+    <Content Include="Content\bootstrap-select\dist\js\i18n\defaults-ro_RO.min.js" />
+    <Content Include="Content\bootstrap-select\dist\js\i18n\defaults-ru_RU.js" />
+    <Content Include="Content\bootstrap-select\dist\js\i18n\defaults-ru_RU.min.js" />
+    <Content Include="Content\bootstrap-select\dist\js\i18n\defaults-sk_SK.js" />
+    <Content Include="Content\bootstrap-select\dist\js\i18n\defaults-sk_SK.min.js" />
+    <Content Include="Content\bootstrap-select\dist\js\i18n\defaults-sl_SI.js" />
+    <Content Include="Content\bootstrap-select\dist\js\i18n\defaults-sl_SI.min.js" />
+    <Content Include="Content\bootstrap-select\dist\js\i18n\defaults-sv_SE.js" />
+    <Content Include="Content\bootstrap-select\dist\js\i18n\defaults-sv_SE.min.js" />
+    <Content Include="Content\bootstrap-select\dist\js\i18n\defaults-tr_TR.js" />
+    <Content Include="Content\bootstrap-select\dist\js\i18n\defaults-tr_TR.min.js" />
+    <Content Include="Content\bootstrap-select\dist\js\i18n\defaults-ua_UA.js" />
+    <Content Include="Content\bootstrap-select\dist\js\i18n\defaults-ua_UA.min.js" />
+    <Content Include="Content\bootstrap-select\dist\js\i18n\defaults-zh_CN.js" />
+    <Content Include="Content\bootstrap-select\dist\js\i18n\defaults-zh_CN.min.js" />
+    <Content Include="Content\bootstrap-select\dist\js\i18n\defaults-zh_TW.js" />
+    <Content Include="Content\bootstrap-select\dist\js\i18n\defaults-zh_TW.min.js" />
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
@@ -228,6 +319,11 @@
     <Content Include="Content\datepicker2.4.5\jquery.datetimepicker.full.js" />
     <Content Include="Content\datepicker2.4.5\jquery.datetimepicker.js" />
     <Content Include="Content\datepicker2.4.5\jquery.datetimepicker.min.js" />
+    <Content Include="Content\daterangepicker\daterangepicker.css" />
+    <Content Include="Content\daterangepicker\daterangepicker.js" />
+    <Content Include="Content\daterangepicker\es.js" />
+    <Content Include="Content\daterangepicker\moment.js" />
+    <Content Include="Content\daterangepicker\moment.min.js" />
     <Content Include="Content\dynatable0.3.1\dynatableloading.css" />
     <Content Include="Content\dynatable0.3.1\jquery.dynatable.css" />
     <Content Include="Content\dynatable0.3.1\jquery.dynatable.js" />
@@ -245,9 +341,12 @@
     <Content Include="Content\jquery2.1.3\jquery.min.js" />
     <Content Include="Content\jqueryvalidation\jquery-validate.js" />
     <Content Include="Content\jqueryvalidation\jquery-validate.min.js" />
+    <Content Include="Content\jsmethods\autorizador.js" />
     <Content Include="Content\jsmethods\concept.js" />
+    <Content Include="Content\jsmethods\copia.js" />
     <Content Include="Content\jsmethods\department.js" />
     <Content Include="Content\jsmethods\initAdmin.js" />
+    <Content Include="Content\jsmethods\jefe.js" />
     <Content Include="Content\jsmethods\login.js" />
     <Content Include="Content\jsmethods\manager.js" />
     <Content Include="Content\jsmethods\permisos.js" />
@@ -369,6 +468,9 @@
     <Content Include="Content\jquery2.1.3\jquery.min.map" />
     <Content Include="Content\select1.7.4\css\bootstrap-select.css.map" />
     <Content Include="Content\select1.7.4\js\bootstrap-select.js.map" />
+    <Content Include="Content\daterangepicker\daterangepicker.scss" />
+    <Content Include="Content\bootstrap-select\dist\css\bootstrap-select.css.map" />
+    <Content Include="Content\bootstrap-select\dist\js\bootstrap-select.js.map" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.3.1.js" />

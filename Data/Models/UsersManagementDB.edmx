@@ -40,7 +40,7 @@
           <Key>
             <PropertyRef Name="RequestId" />
           </Key>
-          <Property Name="RequestId" Type="int" Nullable="false" />
+          <Property Name="RequestId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="ConceptId" Type="int" Nullable="false" />
           <Property Name="CopyId" Type="int" Nullable="false" />
           <Property Name="AuthorizeId" Type="int" Nullable="false" />
@@ -177,43 +177,19 @@
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="UsersManagementModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
-        <EntityType Name="user">
-          <Key>
-            <PropertyRef Name="UserId" />
-          </Key>
-          <Property Name="UserId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Nick" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="Name" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="Email" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="Telephone" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="Boss" Type="Boolean" Nullable="false" />
-          <Property Name="Authorizing" Type="Boolean" Nullable="false" />
-          <Property Name="Petitioner" Type="Boolean" Nullable="false" />
-          <Property Name="Copy" Type="Boolean" Nullable="false" />
-          <Property Name="Type" Type="Int32" Nullable="false" />
-          <Property Name="RegStatus" Type="Boolean" Nullable="false" />
-          <Property Name="RegTimeStamp" Type="DateTime" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="UpdateAt" Type="DateTime" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Pass" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="DepartmentId" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="department" Relationship="UsersManagementModel.DepartmentFK" FromRole="user" ToRole="department" />
-          <NavigationProperty Name="requests" Relationship="UsersManagementModel.authorizeFK" FromRole="user" ToRole="requests" />
-          <NavigationProperty Name="requests1" Relationship="UsersManagementModel.copyFK" FromRole="user" ToRole="requests" />
-          <NavigationProperty Name="requests2" Relationship="UsersManagementModel.userFK" FromRole="user" ToRole="requests" />
-        </EntityType>
         <EntityContainer Name="UsersManagementEntities" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="user" EntityType="Self.user" />
-          <EntitySet Name="department" EntityType="UsersManagementModel.department" />
-          <AssociationSet Name="DepartmentFK" Association="UsersManagementModel.DepartmentFK">
-            <End Role="department" EntitySet="department" />
-            <End Role="user" EntitySet="user" />
-          </AssociationSet>
           <EntitySet Name="concept" EntityType="UsersManagementModel.concept" />
+          <EntitySet Name="department" EntityType="UsersManagementModel.department" />
           <EntitySet Name="questions" EntityType="UsersManagementModel.questions" />
           <EntitySet Name="requests" EntityType="UsersManagementModel.requests" />
+          <EntitySet Name="user" EntityType="UsersManagementModel.user" />
           <AssociationSet Name="conceptFK" Association="UsersManagementModel.conceptFK">
             <End Role="concept" EntitySet="concept" />
             <End Role="requests" EntitySet="requests" />
+          </AssociationSet>
+          <AssociationSet Name="DepartmentFK" Association="UsersManagementModel.DepartmentFK">
+            <End Role="department" EntitySet="department" />
+            <End Role="user" EntitySet="user" />
           </AssociationSet>
           <AssociationSet Name="requestFK" Association="UsersManagementModel.requestFK">
             <End Role="requests" EntitySet="requests" />
@@ -232,29 +208,6 @@
             <End Role="requests" EntitySet="requests" />
           </AssociationSet>
         </EntityContainer>
-        <EntityType Name="department">
-          <Key>
-            <PropertyRef Name="DepartmentId" />
-          </Key>
-          <Property Name="DepartmentId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Nombre" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
-          <Property Name="CreatedAt" Type="DateTime" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="UpdatedAt" Type="DateTime" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="RegStatus" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="user" Relationship="UsersManagementModel.DepartmentFK" FromRole="department" ToRole="user" />
-        </EntityType>
-        <Association Name="DepartmentFK">
-          <End Type="UsersManagementModel.department" Role="department" Multiplicity="1" />
-          <End Type="UsersManagementModel.user" Role="user" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="department">
-              <PropertyRef Name="DepartmentId" />
-            </Principal>
-            <Dependent Role="user">
-              <PropertyRef Name="DepartmentId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityType Name="concept">
           <Key>
             <PropertyRef Name="ConceptId" />
@@ -265,6 +218,17 @@
           <Property Name="UpdatedAt" Type="DateTime" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="RegStatus" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="requests" Relationship="UsersManagementModel.conceptFK" FromRole="concept" ToRole="requests" />
+        </EntityType>
+        <EntityType Name="department">
+          <Key>
+            <PropertyRef Name="DepartmentId" />
+          </Key>
+          <Property Name="DepartmentId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nombre" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="CreatedAt" Type="DateTime" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UpdatedAt" Type="DateTime" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="RegStatus" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="user" Relationship="UsersManagementModel.DepartmentFK" FromRole="department" ToRole="user" />
         </EntityType>
         <EntityType Name="questions">
           <Key>
@@ -282,7 +246,7 @@
           <Key>
             <PropertyRef Name="RequestId" />
           </Key>
-          <Property Name="RequestId" Type="Int32" Nullable="false" />
+          <Property Name="RequestId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="ConceptId" Type="Int32" Nullable="false" />
           <Property Name="CopyId" Type="Int32" Nullable="false" />
           <Property Name="AuthorizeId" Type="Int32" Nullable="false" />
@@ -297,6 +261,30 @@
           <NavigationProperty Name="user1" Relationship="UsersManagementModel.copyFK" FromRole="requests" ToRole="user" />
           <NavigationProperty Name="user2" Relationship="UsersManagementModel.userFK" FromRole="requests" ToRole="user" />
         </EntityType>
+        <EntityType Name="user">
+          <Key>
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="UserId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nick" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="Pass" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="Email" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="Telephone" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="Boss" Type="Boolean" Nullable="false" />
+          <Property Name="Authorizing" Type="Boolean" Nullable="false" />
+          <Property Name="Petitioner" Type="Boolean" Nullable="false" />
+          <Property Name="Copy" Type="Boolean" Nullable="false" />
+          <Property Name="Type" Type="Int32" Nullable="false" />
+          <Property Name="RegStatus" Type="Boolean" Nullable="false" />
+          <Property Name="RegTimeStamp" Type="DateTime" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UpdateAt" Type="DateTime" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DepartmentId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="department" Relationship="UsersManagementModel.DepartmentFK" FromRole="user" ToRole="department" />
+          <NavigationProperty Name="requests" Relationship="UsersManagementModel.authorizeFK" FromRole="user" ToRole="requests" />
+          <NavigationProperty Name="requests1" Relationship="UsersManagementModel.copyFK" FromRole="user" ToRole="requests" />
+          <NavigationProperty Name="requests2" Relationship="UsersManagementModel.userFK" FromRole="user" ToRole="requests" />
+        </EntityType>
         <Association Name="conceptFK">
           <End Type="UsersManagementModel.concept" Role="concept" Multiplicity="1" />
           <End Type="UsersManagementModel.requests" Role="requests" Multiplicity="*" />
@@ -306,6 +294,18 @@
             </Principal>
             <Dependent Role="requests">
               <PropertyRef Name="ConceptId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="DepartmentFK">
+          <End Type="UsersManagementModel.department" Role="department" Multiplicity="1" />
+          <End Type="UsersManagementModel.user" Role="user" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="department">
+              <PropertyRef Name="DepartmentId" />
+            </Principal>
+            <Dependent Role="user">
+              <PropertyRef Name="DepartmentId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -357,30 +357,20 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-      </Schema>
+        </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="UsersManagementModelStoreContainer" CdmEntityContainer="UsersManagementEntities">
-          <EntitySetMapping Name="user">
-            <EntityTypeMapping TypeName="UsersManagementModel.user">
-              <MappingFragment StoreEntitySet="user">
-                <ScalarProperty Name="DepartmentId" ColumnName="DepartmentId" />
-                <ScalarProperty Name="UserId" ColumnName="UserId" />
-                <ScalarProperty Name="Nick" ColumnName="Nick" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="Email" ColumnName="Email" />
-                <ScalarProperty Name="Telephone" ColumnName="Telephone" />
-                <ScalarProperty Name="Boss" ColumnName="Boss" />
-                <ScalarProperty Name="Authorizing" ColumnName="Authorizing" />
-                <ScalarProperty Name="Petitioner" ColumnName="Petitioner" />
-                <ScalarProperty Name="Copy" ColumnName="Copy" />
-                <ScalarProperty Name="Type" ColumnName="Type" />
+          <EntitySetMapping Name="concept">
+            <EntityTypeMapping TypeName="UsersManagementModel.concept">
+              <MappingFragment StoreEntitySet="concept">
                 <ScalarProperty Name="RegStatus" ColumnName="RegStatus" />
-                <ScalarProperty Name="RegTimeStamp" ColumnName="RegTimeStamp" />
-                <ScalarProperty Name="UpdateAt" ColumnName="UpdateAt" />
-                <ScalarProperty Name="Pass" ColumnName="Pass" />
+                <ScalarProperty Name="UpdatedAt" ColumnName="UpdatedAt" />
+                <ScalarProperty Name="CreatedAt" ColumnName="CreatedAt" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="ConceptId" ColumnName="ConceptId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -392,17 +382,6 @@
                 <ScalarProperty Name="CreatedAt" ColumnName="CreatedAt" />
                 <ScalarProperty Name="Nombre" ColumnName="Nombre" />
                 <ScalarProperty Name="DepartmentId" ColumnName="DepartmentId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="concept">
-            <EntityTypeMapping TypeName="UsersManagementModel.concept">
-              <MappingFragment StoreEntitySet="concept">
-                <ScalarProperty Name="RegStatus" ColumnName="RegStatus" />
-                <ScalarProperty Name="UpdatedAt" ColumnName="UpdatedAt" />
-                <ScalarProperty Name="CreatedAt" ColumnName="CreatedAt" />
-                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
-                <ScalarProperty Name="ConceptId" ColumnName="ConceptId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -430,6 +409,27 @@
                 <ScalarProperty Name="CopyId" ColumnName="CopyId" />
                 <ScalarProperty Name="ConceptId" ColumnName="ConceptId" />
                 <ScalarProperty Name="RequestId" ColumnName="RequestId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="user">
+            <EntityTypeMapping TypeName="UsersManagementModel.user">
+              <MappingFragment StoreEntitySet="user">
+                <ScalarProperty Name="DepartmentId" ColumnName="DepartmentId" />
+                <ScalarProperty Name="UpdateAt" ColumnName="UpdateAt" />
+                <ScalarProperty Name="RegTimeStamp" ColumnName="RegTimeStamp" />
+                <ScalarProperty Name="RegStatus" ColumnName="RegStatus" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="Copy" ColumnName="Copy" />
+                <ScalarProperty Name="Petitioner" ColumnName="Petitioner" />
+                <ScalarProperty Name="Authorizing" ColumnName="Authorizing" />
+                <ScalarProperty Name="Boss" ColumnName="Boss" />
+                <ScalarProperty Name="Telephone" ColumnName="Telephone" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Pass" ColumnName="Pass" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Nick" ColumnName="Nick" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

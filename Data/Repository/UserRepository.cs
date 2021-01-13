@@ -50,20 +50,20 @@ namespace Data.Repository
         /// <summary>
         ///     obtiene la lista de copias 
         /// </summary>
-        public List<user> GetListCopy()
+        public List<user> GetListCopy(int departmentId)
         {
             List<user> users = new List<user>();
-            users = DataBaseEntities.user.Where(w => w.RegStatus && w.Copy).ToList();
+            users = DataBaseEntities.user.Where(w => w.RegStatus && w.Copy && w.DepartmentId == departmentId).ToList();
             return users;
         }
 
         /// <summary>
         ///     obtiene la lista de autorizadores 
         /// </summary>
-        public List<user> GetListAutorize()
+        public List<user> GetListAutorize(int departmentId)
         {
             List<user> users = new List<user>();
-            users = DataBaseEntities.user.Where(w => w.RegStatus && w.Authorizing).ToList();
+            users = DataBaseEntities.user.Where(w => w.RegStatus && w.Authorizing && w.DepartmentId == departmentId).ToList();
             return users;
         }
 
@@ -108,6 +108,8 @@ namespace Data.Repository
                 userEntity.Name = user.Name;
                 userEntity.Email = user.Email;
                 userEntity.Telephone = user.Telephone;
+                userEntity.Type = user.Type;
+                userEntity.DepartmentId = user.DepartmentId;
 
                 if (!string.IsNullOrEmpty(user.Pass))
                 {

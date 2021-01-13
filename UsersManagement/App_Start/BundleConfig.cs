@@ -59,6 +59,11 @@ namespace UsersManagement
                 "~/Content/bootstrap-dropdown-hover/css/animate.css",
                 "~/Content/bootstrap-dropdown-hover/css/bootstrap-dropdownhover.css"
             ));
+
+            //Css daterange
+            bundles.Add(new StyleBundle("~/bundles/daterange").Include(
+                "~/Content/daterangepicker/daterangepicker.css"
+            ));
         }
     }
 }
