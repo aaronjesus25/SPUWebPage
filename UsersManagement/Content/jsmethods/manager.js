@@ -726,7 +726,7 @@ var Forms = function (idButtonView, idTable, idDivTable, idForm, idDivForm) {
 
      /**
      * 
-     * @param {string} endPoint - url tipo /Cliente/Update
+     * @param {string} endPoint - url 
      * @param {function} callback - función que se ejecuta si la petición tuvo éxito y debe refrescar la tabla
      * @param {object} values -  objeto formado con los datos del formulario, deben tener los mismos nombres que en el modelo
      * @returns {} 

@@ -5,6 +5,14 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="UsersManagementModel.Store" Provider="MySql.Data.MySqlClient" ProviderManifestToken="8.0" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="authorize_department">
+          <Key>
+            <PropertyRef Name="AuthorizeDepartmentId" />
+          </Key>
+          <Property Name="UserId" Type="int" Nullable="false" />
+          <Property Name="DepartmentId" Type="int" Nullable="false" />
+          <Property Name="AuthorizeDepartmentId" Type="int" Nullable="false" />
+        </EntityType>
         <EntityType Name="concept">
           <Key>
             <PropertyRef Name="ConceptId" />
@@ -35,6 +43,7 @@
           <Property Name="CreatedAt" Type="datetime" Precision="0" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="UpdatedAt" Type="datetime" Precision="0" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="RequestId" Type="int" Nullable="false" />
+          <Property Name="Answer" Type="varchar" MaxLength="250" Nullable="false" />
         </EntityType>
         <EntityType Name="requests">
           <Key>
@@ -49,6 +58,8 @@
           <Property Name="RegStatus" Type="bool" Nullable="false" />
           <Property Name="Type" Type="int" Nullable="false" />
           <Property Name="UserId" Type="int" Nullable="false" />
+          <Property Name="LockCopy" Type="int" Nullable="false" />
+          <Property Name="LockAutorize" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="user">
           <Key>
@@ -118,6 +129,30 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="fk_department_DepartmentId">
+          <End Role="department" Type="Self.department" Multiplicity="1" />
+          <End Role="authorize_department" Type="Self.authorize_department" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="department">
+              <PropertyRef Name="DepartmentId" />
+            </Principal>
+            <Dependent Role="authorize_department">
+              <PropertyRef Name="DepartmentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_user_UserId">
+          <End Role="user" Type="Self.user" Multiplicity="1" />
+          <End Role="authorize_department" Type="Self.authorize_department" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="user">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="authorize_department">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="requestFK">
           <End Role="requests" Type="Self.requests" Multiplicity="1" />
           <End Role="questions" Type="Self.questions" Multiplicity="*" />
@@ -143,6 +178,7 @@
           </ReferentialConstraint>
         </Association>
         <EntityContainer Name="UsersManagementModelStoreContainer">
+          <EntitySet Name="authorize_department" EntityType="Self.authorize_department" Schema="users_management" store:Type="Tables" />
           <EntitySet Name="concept" EntityType="Self.concept" Schema="users_management" store:Type="Tables" />
           <EntitySet Name="department" EntityType="Self.department" Schema="users_management" store:Type="Tables" />
           <EntitySet Name="questions" EntityType="Self.questions" Schema="users_management" store:Type="Tables" />
@@ -164,6 +200,14 @@
             <End Role="department" EntitySet="department" />
             <End Role="user" EntitySet="user" />
           </AssociationSet>
+          <AssociationSet Name="fk_department_DepartmentId" Association="Self.fk_department_DepartmentId">
+            <End Role="department" EntitySet="department" />
+            <End Role="authorize_department" EntitySet="authorize_department" />
+          </AssociationSet>
+          <AssociationSet Name="fk_user_UserId" Association="Self.fk_user_UserId">
+            <End Role="user" EntitySet="user" />
+            <End Role="authorize_department" EntitySet="authorize_department" />
+          </AssociationSet>
           <AssociationSet Name="requestFK" Association="Self.requestFK">
             <End Role="requests" EntitySet="requests" />
             <End Role="questions" EntitySet="questions" />
@@ -178,11 +222,20 @@
     <edmx:ConceptualModels>
       <Schema Namespace="UsersManagementModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityContainer Name="UsersManagementEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="authorize_department" EntityType="UsersManagementModel.authorize_department" />
           <EntitySet Name="concept" EntityType="UsersManagementModel.concept" />
           <EntitySet Name="department" EntityType="UsersManagementModel.department" />
           <EntitySet Name="questions" EntityType="UsersManagementModel.questions" />
           <EntitySet Name="requests" EntityType="UsersManagementModel.requests" />
           <EntitySet Name="user" EntityType="UsersManagementModel.user" />
+          <AssociationSet Name="fk_department_DepartmentId" Association="UsersManagementModel.fk_department_DepartmentId">
+            <End Role="department" EntitySet="department" />
+            <End Role="authorize_department" EntitySet="authorize_department" />
+          </AssociationSet>
+          <AssociationSet Name="fk_user_UserId" Association="UsersManagementModel.fk_user_UserId">
+            <End Role="user" EntitySet="user" />
+            <End Role="authorize_department" EntitySet="authorize_department" />
+          </AssociationSet>
           <AssociationSet Name="conceptFK" Association="UsersManagementModel.conceptFK">
             <End Role="concept" EntitySet="concept" />
             <End Role="requests" EntitySet="requests" />
@@ -208,6 +261,16 @@
             <End Role="requests" EntitySet="requests" />
           </AssociationSet>
         </EntityContainer>
+        <EntityType Name="authorize_department">
+          <Key>
+            <PropertyRef Name="AuthorizeDepartmentId" />
+          </Key>
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <Property Name="DepartmentId" Type="Int32" Nullable="false" />
+          <Property Name="AuthorizeDepartmentId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="department" Relationship="UsersManagementModel.fk_department_DepartmentId" FromRole="authorize_department" ToRole="department" />
+          <NavigationProperty Name="user" Relationship="UsersManagementModel.fk_user_UserId" FromRole="authorize_department" ToRole="user" />
+        </EntityType>
         <EntityType Name="concept">
           <Key>
             <PropertyRef Name="ConceptId" />
@@ -228,6 +291,7 @@
           <Property Name="CreatedAt" Type="DateTime" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="UpdatedAt" Type="DateTime" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="RegStatus" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="authorize_department" Relationship="UsersManagementModel.fk_department_DepartmentId" FromRole="department" ToRole="authorize_department" />
           <NavigationProperty Name="user" Relationship="UsersManagementModel.DepartmentFK" FromRole="department" ToRole="user" />
         </EntityType>
         <EntityType Name="questions">
@@ -240,6 +304,7 @@
           <Property Name="CreatedAt" Type="DateTime" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="UpdatedAt" Type="DateTime" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="RequestId" Type="Int32" Nullable="false" />
+          <Property Name="Answer" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="requests" Relationship="UsersManagementModel.requestFK" FromRole="questions" ToRole="requests" />
         </EntityType>
         <EntityType Name="requests">
@@ -260,6 +325,8 @@
           <NavigationProperty Name="user" Relationship="UsersManagementModel.authorizeFK" FromRole="requests" ToRole="user" />
           <NavigationProperty Name="user1" Relationship="UsersManagementModel.copyFK" FromRole="requests" ToRole="user" />
           <NavigationProperty Name="user2" Relationship="UsersManagementModel.userFK" FromRole="requests" ToRole="user" />
+          <Property Name="LockCopy" Type="Int32" Nullable="false" />
+          <Property Name="LockAutorize" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="user">
           <Key>
@@ -280,11 +347,36 @@
           <Property Name="RegTimeStamp" Type="DateTime" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="UpdateAt" Type="DateTime" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="DepartmentId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="authorize_department" Relationship="UsersManagementModel.fk_user_UserId" FromRole="user" ToRole="authorize_department" />
           <NavigationProperty Name="department" Relationship="UsersManagementModel.DepartmentFK" FromRole="user" ToRole="department" />
           <NavigationProperty Name="requests" Relationship="UsersManagementModel.authorizeFK" FromRole="user" ToRole="requests" />
           <NavigationProperty Name="requests1" Relationship="UsersManagementModel.copyFK" FromRole="user" ToRole="requests" />
           <NavigationProperty Name="requests2" Relationship="UsersManagementModel.userFK" FromRole="user" ToRole="requests" />
         </EntityType>
+        <Association Name="fk_department_DepartmentId">
+          <End Type="UsersManagementModel.department" Role="department" Multiplicity="1" />
+          <End Type="UsersManagementModel.authorize_department" Role="authorize_department" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="department">
+              <PropertyRef Name="DepartmentId" />
+            </Principal>
+            <Dependent Role="authorize_department">
+              <PropertyRef Name="DepartmentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_user_UserId">
+          <End Type="UsersManagementModel.user" Role="user" Multiplicity="1" />
+          <End Type="UsersManagementModel.authorize_department" Role="authorize_department" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="user">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="authorize_department">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="conceptFK">
           <End Type="UsersManagementModel.concept" Role="concept" Multiplicity="1" />
           <End Type="UsersManagementModel.requests" Role="requests" Multiplicity="*" />
@@ -363,6 +455,15 @@
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="UsersManagementModelStoreContainer" CdmEntityContainer="UsersManagementEntities">
+          <EntitySetMapping Name="authorize_department">
+            <EntityTypeMapping TypeName="UsersManagementModel.authorize_department">
+              <MappingFragment StoreEntitySet="authorize_department">
+                <ScalarProperty Name="AuthorizeDepartmentId" ColumnName="AuthorizeDepartmentId" />
+                <ScalarProperty Name="DepartmentId" ColumnName="DepartmentId" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="concept">
             <EntityTypeMapping TypeName="UsersManagementModel.concept">
               <MappingFragment StoreEntitySet="concept">
@@ -388,6 +489,7 @@
           <EntitySetMapping Name="questions">
             <EntityTypeMapping TypeName="UsersManagementModel.questions">
               <MappingFragment StoreEntitySet="questions">
+                <ScalarProperty Name="Answer" ColumnName="Answer" />
                 <ScalarProperty Name="RequestId" ColumnName="RequestId" />
                 <ScalarProperty Name="UpdatedAt" ColumnName="UpdatedAt" />
                 <ScalarProperty Name="CreatedAt" ColumnName="CreatedAt" />
@@ -400,6 +502,8 @@
           <EntitySetMapping Name="requests">
             <EntityTypeMapping TypeName="UsersManagementModel.requests">
               <MappingFragment StoreEntitySet="requests">
+                <ScalarProperty Name="LockAutorize" ColumnName="LockAutorize" />
+                <ScalarProperty Name="LockCopy" ColumnName="LockCopy" />
                 <ScalarProperty Name="UserId" ColumnName="UserId" />
                 <ScalarProperty Name="Type" ColumnName="Type" />
                 <ScalarProperty Name="RegStatus" ColumnName="RegStatus" />

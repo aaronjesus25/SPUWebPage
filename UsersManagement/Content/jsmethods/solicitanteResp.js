@@ -27,8 +27,6 @@ $(document).ready(function () {
     FillAutorize();
     FillCopy();
     FillConcepts();
-    ChangeLockCopy();
-    ChangeLockAuth();
     List();
 });
 
@@ -46,28 +44,21 @@ function SelectedCheck() {
 //validar formulario
 function ValidateForm() {
 
-    var lockA = $('#LockAutorize').val();
-    var lockC = $('#LockCopy').val();
-
     if ($('#ConceptId').val() === undefined || $('#ConceptId').val() === null || $('#ConceptId').val() === '0') {
         swal('Campo obligatorio', 'Debe seleccionar un concepto');
         return false;
     }
 
-    if (lockA !== '1') {
-        if ($('#AuthorizeId').val() === undefined || $('#AuthorizeId').val() === null || $('#AuthorizeId').val() === '0') {
-            swal('Campo obligatorio', 'Debe seleccionar un Autorizador');
-            return false;
-        }
+    if ($('#AuthorizeId').val() === undefined || $('#AuthorizeId').val() === null || $('#AuthorizeId').val() === '0') {
+        swal('Campo obligatorio', 'Debe seleccionar un Autorizador');
+        return false;
     }
 
-    if (lockC !== '1') {
-        if ($('#CopyId').val() === undefined || $('#CopyId').val() === null || $('#CopyId').val() === '0') {
-            swal('Campo obligatorio', 'Debe seleccionar una copia');
-            return false;
-        }
+    if ($('#CopyId').val() === undefined || $('#CopyId').val() === null || $('#CopyId').val() === '0') {
+        swal('Campo obligatorio', 'Debe seleccionar una copia');
+        return false;
     }
-    
+
     if ($("input[name='name']").val() === undefined || $("input[name='name']").val() === null || $("input[name='name']").val() === '') {
         swal('Campo obligatorio', 'Debe escribir una pregunta');
         return false;
@@ -102,8 +93,7 @@ function Save() {
             //si es valido guarda la info
             if (isValid) {
                 paramQuestion = {
-                    Text: question,
-                    Answer: ' '
+                    Text: question
                 }
 
                 questions.push(paramQuestion);
@@ -407,43 +397,5 @@ function InitializeDatePicker() {
     });
     $dateEnd.on('apply.daterangepicker', function (ev, picker) {
         $(this).val(picker.startDate.format('DD/MM/YYYY h:mm A'));
-    });
-}
-
-function ChangeLockCopy() {
-    $('#LockCopy').change(function () {
-
-        var val = $(this).val()
-
-        if (val === '1') {
-            $('#CopyId').hide(1000);
-            $('#CopyId').val(0);
-            $('#lblCopyId').text('Sin Asignar');
-
-        }
-        else {
-            $('#CopyId').show(1000);
-            $('#CopyId').val(0);
-            $('#lblCopyId').text('Copia');
-        }
-    });
-}
-
-function ChangeLockAuth() {
-    $('#LockAutorize').change(function () {
-
-        var val = $(this).val()
-
-        if (val === '1') {
-            $('#AuthorizeId').hide(1000);
-            $('#AuthorizeId').val(0);
-            $('#lblAuthorizeId').text('Sin asignar');
-
-        }
-        else {
-            $('#AuthorizeId').show(1000);
-            $('#AuthorizeId').val(0);
-            $('#lblAuthorizeId').text('Autorizador');
-        }
     });
 }

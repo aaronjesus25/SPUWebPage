@@ -347,10 +347,13 @@
     <Content Include="Content\jsmethods\department.js" />
     <Content Include="Content\jsmethods\initAdmin.js" />
     <Content Include="Content\jsmethods\jefe.js" />
+    <Content Include="Content\jsmethods\JefeResp.js" />
     <Content Include="Content\jsmethods\login.js" />
     <Content Include="Content\jsmethods\manager.js" />
     <Content Include="Content\jsmethods\permisos.js" />
+    <Content Include="Content\jsmethods\PermisosAutorizadores.js" />
     <Content Include="Content\jsmethods\solicitante.js" />
+    <Content Include="Content\jsmethods\solicitanteResp.js" />
     <Content Include="Content\jsmethods\user.js" />
     <Content Include="Content\jsmethods\utils.js" />
     <Content Include="Content\lz_string\bin\bin.js" />
@@ -508,6 +511,9 @@
     <Content Include="Views\Home\Copia.cshtml" />
     <Content Include="Views\Home\Solicitante.cshtml" />
     <Content Include="Views\Concepts\Index.cshtml" />
+    <Content Include="Views\Home\JefeResp.cshtml" />
+    <Content Include="Views\Home\SolicitanteResp.cshtml" />
+    <Content Include="Views\Users\Autorizadores.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

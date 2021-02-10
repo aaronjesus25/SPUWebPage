@@ -35,6 +35,12 @@ namespace UsersManagement.Controllers
             return View();
         }
 
+        // GET: Users/Autorizadores
+        public ActionResult Autorizadores()
+        {
+            return View();
+        }
+
         // GET: Users/Details/5
         public ActionResult Details(int id)
         {

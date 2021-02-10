@@ -424,4 +424,70 @@ var Utils = function (idTable, idDivTable) {
         };
         request.send(values);
     };
+
+    /**
+   * 
+   * @param {string} endPoint - url 
+   * @param {function} callback - función que se ejecuta si la petición tuvo éxito y debe refrescar la tabla
+   * @param {object} values -  objeto formado con los datos del formulario, deben tener los mismos nombres que en el modelo
+   * @returns {} 
+   */
+
+    self.FillCombo = function (comboId, displayName, dataValue, endPoint, values, method = 'GET') {
+        //peticion
+        $.ajax({
+            type: method,
+            contentType: 'application/json',
+            data: values,
+            beforeSend: function () {
+                $.spin('true');
+            },
+            url: endPoint,
+            async: false,
+            success: function (data) {
+
+                //valida la respuesta
+                if (data.Data !== null) {
+
+                    //obtiene el combobox
+                    mySelect = $('#' + comboId);
+
+                    //limpia el elemento
+                    $('#' + comboId + " option").remove();
+
+                    //inserta el dato por default
+                    mySelect.append($('<option>', {
+                        value: 0,
+                        text: "Selecciona una opcion..."
+                    }));
+
+                    //seta los departamentos
+                    $.each(data.Data, function (i, item) {
+                        mySelect.append($('<option>', {
+                            value: item[dataValue],
+                            text: item[displayName]
+                        }));
+                    });
+                }
+                else {
+                    //obtiene el combobox
+                    mySelect = $('#' + comboId);
+
+                    //limpia el elemento
+                    $('#' + comboId + " option").remove();
+
+                    //inserta el dato por default
+                    mySelect.append($('<option>', {
+                        value: 0,
+                        text: "Selecciona una opcion..."
+                    }));
+                }
+            },
+            error: function (xhr) {
+                self.generateNotification('No se ha podido obtener los datos de la geocerca, verifique su conexión-->' + xhr.responseText, "error");
+            }
+        }).always(function () {
+            $.spin('false');
+        });
+    };
 }

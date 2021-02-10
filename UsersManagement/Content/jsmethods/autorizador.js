@@ -169,7 +169,11 @@ function ModalQuestions(data) {
             var questionsArray = dataResponse[i]['QuestionsVM'];
 
             for (var c = 0; c < questionsArray.length; c++) {
-                htmlModal += '<li class="list-group-item"> ' + questionsArray[c].Text + ' </li>';
+
+                //control para responder la pregunta
+                var responseText = '<input type="text" name="answer" value="' + questionsArray[c].Answer + '" class="form-control" disabled/>';
+
+                htmlModal += '<li class="list-group-item"> ' + questionsArray[c].Text + '<br/>' + responseText +  ' </li>';
             }
         }
 

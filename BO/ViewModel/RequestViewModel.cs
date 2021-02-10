@@ -36,6 +36,10 @@ namespace BO.ViewModel
         public string DateEnd { get; set; }//18
         public int TypeRequest { get; set; }//19
 
+        //permisos solicitud
+        public int LockCopy { get; set; }
+        public int LockAutorize { get; set; }
+
 
         public ICollection<questions> Questions { get; set; }
         public ICollection<QuestionViewModel> QuestionsVM { get; set; }

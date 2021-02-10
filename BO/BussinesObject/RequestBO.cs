@@ -191,6 +191,18 @@ namespace BO.BussinesObject
 
             try
             {
+                //valida los accesos de la solicitud
+                if (model.LockAutorize == 1)
+                {
+                    model.AuthorizeId = 1;
+                }
+
+                //valida los accesos de la copia
+                if (model.LockCopy == 1)
+                {
+                    model.CopyId = 1;
+                }
+
                 //map entity
                 var entity = Map.ViewModelToEntity(model);
 

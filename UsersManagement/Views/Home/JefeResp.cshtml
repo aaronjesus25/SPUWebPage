@@ -1,7 +1,7 @@
 ﻿@using System.Configuration;
 
 @{
-    ViewBag.Title = "Solicitante";
+    ViewBag.Title = "Jefe";
     Layout = "~/Views/Shared/_Layout.cshtml";
     var Version = ConfigurationManager.AppSettings["Version"];
 }
@@ -15,7 +15,7 @@
     <div id="butonsoperations">
         <div class="form-group pull-left">
             <button type="button" class="btn btn-default" id="checkall"><i class="fa fa-list"></i> Selec. Todos</button>
-            <button type="button" class="btn btn-success" id="create"><i class="fa fa-remove"></i> Responder</button>
+            <button type="button" class="btn btn-success" id="create"><i class="fa fa-remove"></i> Aprobar</button>
             <button type="button" class="btn btn-danger" id="delete"><i class="fa fa-remove"></i> Rechazar</button>
         </div>
     </div>
@@ -99,72 +99,10 @@
     </div>
 </div>
 
-<!-- Modal Response -->
-<div id="myModalResponse" class="modal fade" role="dialog">
-    <div class="modal-dialog modal-lg">
-
-        <!-- Modal content-->
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">Respuesta de la solicitud</h4>
-            </div>
-            <div class="modal-body">
-
-                <!--Form de respuesta-->
-                <form role="form" id="form">
-                    <div class="col-xs-12 col-sm-12 col-lg-12 col-md-12">
-                        <div class="well well-sm"><strong><span class="fa fa-exclamation-circle"></span> Datos requeridos</strong></div>
-                        <div class="row">
-                            <div class="form-group col-xs-12 col-sm-12 col-md-4 col-ls-4 ocultar">
-                                <label>SolicitudId</label>
-                                <div class="right-inner-addon">
-                                    <i class="fa fa-exclamation-circle"></i>
-                                    <input type="text" class="form-control" autocomplete="off" disabled="disabled" id="RequestId" name="RequestId" />
-                                </div>
-                            </div>
-                          
-                            <div class="form-group col-xs-12 col-sm-12 col-md-4 col-lg-4 col-ls-4">
-                                <!-- Preguntas de  la solicitud -->
-                                <div id="contentmodalresp"></div>
-                            </div>
-
-                            <div class="form-group col-xs-12 col-sm-12 col-md-4 col-lg-4 col-ls-4">
-                                <label for="AuthorizeId">Autorizador</label>
-                                <div class="right-inner-addon">
-                                    <select name="AuthorizeId" id="AuthorizeId" class="form-control"></select>
-                                </div>
-
-                                <br />
-
-                                <label for="CopyId">Copia</label>
-                                <div class="right-inner-addon">
-                                    <select name="CopyId" id="CopyId" class="form-control"></select>
-                                </div>
-
-                                <br />
-                            </div>
-                        </div>
-                    </div>
-
-                    <div id="buttonsform" class="text-right">
-                        <button type="button" class="btn btn-success" id="save-answers"><i class="fa fa-save"></i> Guardar</button>
-                        <button type="button" class="btn btn-danger" id="cancel-answers" data-dismiss="modal"><i class="fa fa-remove"></i> Cancelar</button>
-                    </div>
-                </form>
-
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            </div>
-        </div>
-    </div>
-</div>
-
 @section Scripts {
     @Scripts.Render("~/Content/daterangepicker/moment.min.js")
     @Scripts.Render("~/Content/daterangepicker/es.js")
     @Scripts.Render("~/Content/daterangepicker/daterangepicker.js")
     @Scripts.Render("~/Content/jsmethods/utils.js?version=" + Version)
-    @Scripts.Render("~/Content/jsmethods/solicitante.js?version=" + Version)
+    @Scripts.Render("~/Content/jsmethods/jefeResp.js?version=" + Version)
 }

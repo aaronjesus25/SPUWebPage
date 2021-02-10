@@ -1,0 +1,111 @@
+﻿@using System.Configuration;
+
+@{
+    var Version = ConfigurationManager.AppSettings["version"];
+    ViewBag.Title = "Autorizadores";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="col-xs-12 col-sm-12 col-lg-12 col-md-12 pl-0 pr-0 ml-0 mr-0" id="frame_form">
+    <form role="form" id="form">
+        <div class="col-xs-12 col-sm-12 col-lg-12 col-md-12">
+            <div class="well well-sm"><strong><span class="fa fa-exclamation-circle"></span> Datos requeridos</strong></div>
+            <div class="row">
+                <div class="form-group col-xs-12 col-sm-12 col-md-4 col-ls-4 ocultar">
+                    <label>AuthorizeDepartmentId</label>
+                    <div class="right-inner-addon">
+                        <i class="fa fa-exclamation-circle"></i>
+                        <input type="text" class="form-control" autocomplete="off" disabled="disabled" id="AuthorizeDepartmentId" name="AuthorizeDepartmentId" />
+                    </div>
+                </div>
+
+                <div class="form-group col-xs-12 col-sm-12 col-md-8 col-lg-8 col-ls-8 col-lg-offset-4 col-md-offset-4">
+                    <div id="selectaut" style="height:60px">
+                        <label for="UserId">Ususario</label>
+                        <div class="right-inner-addon">
+                            <select name="UserId" id="UserId" class="form-control"></select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group col-xs-12 col-sm-12 col-md-8 col-lg-8 col-ls-8 col-lg-offset-4 col-md-offset-4">
+                    <label for="tipo">Departamento</label>
+                    <div class="right-inner-addon">
+                        <select name="DepartmentId" id="DepartmentId" class="form-control"></select>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div id="buttonsform" class="text-right">
+            <button type="button" class="btn btn-success" id="save"><i class="fa fa-save"></i> Guardar</button>
+            <button type="button" class="btn btn-danger" id="cancel"><i class="fa fa-remove"></i> Cancelar</button>
+        </div>
+    </form>
+</div>
+
+<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+    <div id="butonsoperations">
+
+        <div class="form-group pull-left">
+            <button type="button" class="btn btn-success" id="checkall"><i class="fa fa-list"></i> Selec. Todos</button>
+            <button type="button" class="btn btn-success" id="create_modify"><i class="fa fa-male"></i> Crear</button>
+            <button type="button" class="btn btn-danger" id="delete"><i class="fa fa-remove"></i> Eliminar</button>
+        </div>
+
+        <div class="form-group pull-right" style="padding-right:10px;">
+            @*<button type="submit" class="btn btn-success" id="imprimir" onclick="ImprimirReporte()" ;><i class="fa fa-print"></i> Imprimir</button>*@
+            @*<div class="dropdown">
+                    <button class="btn btn-success dropdown-toggle" type="button" data-toggle="dropdown">
+                        <i class="fa fa-arrow-circle-down"></i> Exportar
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu pull-right">
+                        <li><a onclick="ImprimirReporte(0)"><i class="fa fa-file-pdf-o"></i> Pdf</a></li>
+                        <li><a onclick="ImprimirReporte(1)"><i class="fa fa-file-excel-o"></i> Excel</a></li>
+                    </ul>
+                </div>*@
+        </div>
+    </div>
+</div>
+
+<div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+    <label for="DepartmentList">Departamento</label>
+    <div style="width:250px">
+        <select name="DepartmentList" id="DepartmentList" class="form-control"></select>
+    </div>
+</div>
+
+<div class="col-xs-12 col-sm-12 col-md-12 col-ls-12" id="frame_table">
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <div class="text-center">
+                Listado de usuarios
+            </div>
+        </div>
+        <div class="panel-footer table-responsive">
+            <table class="table table-bordered table-striped" id="my-final-table">
+                <thead>
+                    <tr>
+                        <th class="ocultar" id="UserId" data-dynatable-column="UserId">Clave</th>
+                        <th class="ocultar" id="DepartmentId" data-dynatable-column="DepartmentId">DepartmentId</th>
+                        <th class="ocultar" id="Type" data-dynatable-column="Type">Type</th>
+                        <th id="html" data-dynatable-column="html"></th>
+                        <th id="Nick" data-dynatable-column="Nick">Usuario</th>
+                        <th id="Name" data-dynatable-column="Name">Nombre</th>
+                        <th id="Email" data-dynatable-column="Email">Correo</th>
+                        <th id="Departamento" data-dynatable-column="Departamento">Departamento</th>
+                        <th id="Telephone" data-dynatable-column="Telephone">Telefono</th>
+                        <th id="RegTimeStamp" data-dynatable-column="RegTimeStamp">Fecha</th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/Content/jsmethods/manager.js?version=" + Version)
+    @Scripts.Render("~/Content/jsmethods/PermisosAutorizadores.js?version=" + Version)
+}

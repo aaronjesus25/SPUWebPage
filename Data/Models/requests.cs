@@ -30,19 +30,20 @@ namespace Data.Models
         public bool RegStatus { get; set; }
         public int Type { get; set; }
         public int UserId { get; set; }
+        public int LockCopy { get; set; }
+        public int LockAutorize { get; set; }
     
         public virtual concept concept { get; set; }
-
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<questions> questions { get; set; }
 
         [ForeignKey("UserId")]
         public virtual user user { get; set; }
 
-        [ForeignKey("CopyId")]
+        [ForeignKey("AuthorizeId")]
         public virtual user user1 { get; set; }
 
-        [ForeignKey("AuthorizeId")]
+        [ForeignKey("CopyId")]
         public virtual user user2 { get; set; }
     }
 }

@@ -24,6 +24,7 @@ namespace Data.Repository
             {
                 user.RegTimeStamp = dateTime;
                 user.RegStatus = true;
+                user.Boss = true;
 
                 DataBaseEntities.user.Add(user);
                 DataBaseEntities.SaveChanges();
@@ -53,7 +54,7 @@ namespace Data.Repository
         public List<user> GetListCopy(int departmentId)
         {
             List<user> users = new List<user>();
-            users = DataBaseEntities.user.Where(w => w.RegStatus && w.Copy && w.DepartmentId == departmentId).ToList();
+            users = DataBaseEntities.user.Where(w => w.RegStatus).ToList();
             return users;
         }
 

@@ -12,16 +12,13 @@ namespace Data.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class questions
+    public partial class authorize_department
     {
-        public int questionId { get; set; }
-        public string Text { get; set; }
-        public bool RegStatus { get; set; }
-        public System.DateTime CreatedAt { get; set; }
-        public System.DateTime UpdatedAt { get; set; }
-        public int RequestId { get; set; }
-        public string Answer { get; set; }
+        public int UserId { get; set; }
+        public int DepartmentId { get; set; }
+        public int AuthorizeDepartmentId { get; set; }
     
-        public virtual requests requests { get; set; }
+        public virtual department department { get; set; }
+        public virtual user user { get; set; }
     }
 }

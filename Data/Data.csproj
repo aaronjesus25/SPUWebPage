@@ -58,6 +58,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Models\authorize_department.cs">
+      <DependentUpon>UsersManagementDB.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\concept.cs">
       <DependentUpon>UsersManagementDB.tt</DependentUpon>
     </Compile>

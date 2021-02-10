@@ -20,11 +20,36 @@ namespace UsersManagement.Controllers
     {
         //objetos
         private RequestBO RequestObject = new RequestBO();
+        private UserBO UserObject = new UserBO();
 
         // GET: Requests
         public ActionResult Index()
         {
             return View();
+        }
+
+        // GET: IndexBoss
+        public ActionResult IndexBoss()
+        {
+            //obtiene el usuario logueado 
+            var userId = Convert.ToInt32(User.Identity.Name.Split('|')[1]);
+            var user = UserObject.GetById(userId);
+            ViewBag.UserId = userId;
+            ViewBag.UserType = user.Type;
+
+            return View("~/Views/Home/Jefe.cshtml");
+        }
+
+        // GET: IndexReport
+        public ActionResult IndexReport()
+        {
+            //obtiene el usuario logueado 
+            var userId = Convert.ToInt32(User.Identity.Name.Split('|')[1]);
+            var user = UserObject.GetById(userId);
+            ViewBag.UserId = userId;
+            ViewBag.UserType = user.Type;
+
+            return View("~/Views/Home/Copia.cshtml");
         }
 
         //Post: Requests/GetList

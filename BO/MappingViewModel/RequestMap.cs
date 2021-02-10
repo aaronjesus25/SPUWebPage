@@ -49,6 +49,8 @@ namespace BO.MappingViewModel
             model.CreatedAt = entity.CreatedAt.ToString("dd/MM/yyyy");
             model.UpdatedAt = entity.UpdatedAt.ToString("dd/MM/yyyy");
             model.QuestionsVM = new List<QuestionViewModel>();
+            model.LockCopy = entity.LockCopy;
+            model.LockAutorize = entity.LockAutorize;
 
             //get aditional info 
             var userRequest = UserObject.GetById(entity.UserId);
@@ -61,7 +63,8 @@ namespace BO.MappingViewModel
                     RequestId = item.RequestId,
                     questionId = item.questionId,
                     RegStatus = item.RegStatus,
-                    Text = item.Text,                    
+                    Text = item.Text,
+                    Answer = item.Answer,
                     CreatedAt = item.CreatedAt.ToShortDateString(),
                     UpdatedAt = item.UpdatedAt.ToShortDateString()
                 };
@@ -122,6 +125,8 @@ namespace BO.MappingViewModel
             result.CreatedAt = Convert.ToDateTime(model.CreatedAt);
             result.UpdatedAt = Convert.ToDateTime(model.UpdatedAt);
             result.questions = model.Questions;
+            result.LockAutorize = model.LockAutorize;
+            result.LockCopy = model.LockCopy;
 
             return result;
         }

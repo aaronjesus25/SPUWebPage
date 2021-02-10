@@ -35,24 +35,14 @@ namespace UsersManagement.Controllers
                 }
                 else if (user.Boss)
                 {
-                    //vista jefes 
-                    return View("Jefe");
-                }
-                else if (user.Petitioner)
-                {
-                    //vista solicitantes 
+                    //vista solicitantes
                     return View("Solicitante");
-                }
+                }                
                 else if (user.Authorizing)
                 {
-                    //vista autorizador 
+                    //vista autorizadores
                     return View("Autorizador");
-                }
-                else if (user.Copy)
-                {
-                    //vista copia
-                    return View("Copia");
-                }
+                }               
             }
 
             /*

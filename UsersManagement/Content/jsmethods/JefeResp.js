@@ -16,10 +16,7 @@ $(document).ready(function () {
 
     InitializeDatePicker();
     ApproveRequest();
-    SaveAnswers();
     DenyRequest();
-    FillAutorize();
-    FillCopy();
     List();
 });
 
@@ -44,10 +41,6 @@ function List() {
         }
     }).done(function (data) {
 
-        //deshabilita los botones antes de actualizar 
-        utils.VisibleButtonsOperations(false);
-
-        //actualiza la tabla de datos 
         BuidList(data);
 
     }).fail(function (data) {
@@ -98,7 +91,7 @@ function SelectedCheck() {
     utils.getSelectedValues();
 }
 
-//evento clic Responder solicitud
+//evento clic aprovar solicitud
 function ApproveRequest() {
     $('#create').click(function (e) {
 
@@ -117,120 +110,8 @@ function ApproveRequest() {
                 RequestId: id
             }
 
-            //ejecutala peticion para recuperar las preguntas  
-            utils.ExecuteAjax("/Requests/GetById", ModalQuestionsResponse, values, false);
-        });
-    });
-}
+            console.log(values);
 
-//arma las preguntas para ser respondidas 
-function ModalQuestionsResponse(data) {
-
-    //valida los datos
-    if (data !== null && data.Data !== undefined && data.Data !== null) {
-
-        //obtiene las preguntas
-        var dataResponse = data.Data;
-
-        //crea la lista 
-        var htmlModal = '<ul class="list-group" id="myList">';
-
-        //llena la lista de datos
-        for (var i = 0; i < dataResponse.length; i++) {
-
-            //obtiene las preguntas y los identificadores 
-            var questionsArray = dataResponse[i]['QuestionsVM'];
-            var copia = dataResponse[i]['CopyId'];
-            var autorizador = dataResponse[i]['AuthorizeId'];
-            var lockC = dataResponse[i]['LockCopy'];
-            var lockA = dataResponse[i]['LockAutorize'];
-
-            //setea el usuario copia y autorizador
-            $('#CopyId').val(copia);
-            $('#AuthorizeId').val(autorizador);
-
-            //bloquea los controles si esta cerrada la solicitud
-            if (lockA === 2) {
-                $('#AuthorizeId').prop('disabled', true)
-            } else {
-                $('#AuthorizeId').prop('disabled', false)
-            }
-            //
-            if (lockC === 2) {
-                $('#CopyId').prop('disabled', true)
-            } else {
-                $('#CopyId').prop('disabled', false)
-            }
-
-            //recorre las preguntas
-            for (var c = 0; c < questionsArray.length; c++) {
-
-                //control para responder la pregunta
-                var responseText = '<input type="text" name="answer" data-id="' + questionsArray[c].questionId + '" class="form-control" />';
-
-                //nueva fila
-                htmlModal += '<li class="list-group-item"> ' + questionsArray[c].Text + '<br/>' + responseText + ' </li>';
-            }
-        }
-
-        //cierre de la lista
-        htmlModal += '</ul> ';
-
-        //envia los datos 
-        $('#contentmodalresp').html(htmlModal);
-        $('#myModalResponse').modal('show');
-    }
-}
-
-//evento clic guaradar las respuestas de la solicitud
-function SaveAnswers() {
-    $('#save-answers').click(function (e) {
-       
-        //evitar post
-        e.preventDefault();
-
-        //Variables  
-        var copiaId = $('#CopyId').val();
-        var autorizadorId = $('#AuthorizeId').val();
-        var answersArray = [];
-
-        $.each($('#contentmodalresp input'), function () {
-
-            //obtiene la respuesta del campo de texto
-            var answer = $(this).val();
-
-            //obtiene el id de la pregunta que se respondió
-            var id = $(this).data('id');
-
-            //crea el objeto
-            objQuestion = {
-                questionId: id,
-                Answer: answer
-            };
-
-            //guarda el objeto en el arreglo
-            answersArray.push(objQuestion);
-        });
-        
-        //obtengo los datos seleccionados
-        var data = utils.SelectedValues;
-
-        //guarda la configuracion de la solicitud
-        $.each(data, function (key, value) {
-
-            var id = value.RequestId;
-
-            var values = {
-                RequestId: id,
-                Questions: answersArray,
-                CopyId: copiaId,
-                AuthorizeId: autorizadorId
-            }
-
-            //oculta la ventana modal antes de guardar
-            $('#myModalResponse').modal('hide');
-
-            //ejecutala peticion para recuperar las preguntas  
             utils.ExecuteAjax("/Requests/Approve", List, values);
         });
     });
@@ -344,18 +225,4 @@ function InitializeDatePicker() {
     $dateEnd.on('apply.daterangepicker', function (ev, picker) {
         $(this).val(picker.startDate.format('DD/MM/YYYY h:mm A'));
     });
-}
-
-/*Llenar drop usuarios de tipo autorizador*/
-function FillAutorize() {
-
-    //llena el combo de datos
-    utils.FillCombo("AuthorizeId", 'Name', 'UserId', '/Users/GetListAuthorize', '');
-}
-
-/*Llenar drop usuarios de tipo copia*/
-function FillCopy() {
-
-    //llena el combo de datos
-    utils.FillCombo("CopyId", 'Name', 'UserId', '/Users/GetListCopy', '');
 }

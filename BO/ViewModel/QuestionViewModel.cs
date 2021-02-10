@@ -10,6 +10,7 @@ namespace BO.ViewModel
     {
         public int questionId { get; set; }
         public string Text { get; set; }
+        public string Answer { get; set; }
         public bool RegStatus { get; set; }
         public string CreatedAt { get; set; }
         public string UpdatedAt { get; set; }

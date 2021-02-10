@@ -17,6 +17,7 @@ namespace Data.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public user()
         {
+            this.authorize_department = new HashSet<authorize_department>();
             this.requests = new HashSet<requests>();
             this.requests1 = new HashSet<requests>();
             this.requests2 = new HashSet<requests>();
@@ -38,6 +39,8 @@ namespace Data.Models
         public System.DateTime UpdateAt { get; set; }
         public int DepartmentId { get; set; }
     
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<authorize_department> authorize_department { get; set; }
         public virtual department department { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<requests> requests { get; set; }

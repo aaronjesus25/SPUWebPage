@@ -50,6 +50,7 @@
     <Compile Include="MappingViewModel\RequestMap.cs" />
     <Compile Include="MappingViewModel\UserMap.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ViewModel\AuthDepartmentViewModel.cs" />
     <Compile Include="ViewModel\ConceptViewModel.cs" />
     <Compile Include="ViewModel\DepartmentViewModel.cs" />
     <Compile Include="ViewModel\EmpresaViewModel.cs" />

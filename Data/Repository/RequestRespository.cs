@@ -83,7 +83,7 @@ namespace Data.Repository
             
             //obtengo las solicitudes por departamento
             dep = DataBaseEntities.requests.Where(w => w.RegStatus == true &&  
-                                                  w.user.department.DepartmentId == user.department.DepartmentId && 
+                                                  //w.user.department.DepartmentId == user.department.DepartmentId && 
                                                   w.CreatedAt >= start && w.CreatedAt <= end &&
                                                   w.Type == typeRequest).ToList();
 
@@ -129,8 +129,11 @@ namespace Data.Repository
             //lista vacia
             List<requests> dep = new List<requests>();
 
+            //obtengo el usuario 
+            var userObj = DataBaseEntities.user.Where(w => w.UserId == Id).FirstOrDefault();
+
             //obtengo las solicitudes por departamento
-            dep = DataBaseEntities.requests.Where(w => w.CopyId == Id && w.Type == 2 && w.RegStatus && w.CreatedAt >= start && w.CreatedAt <= end).ToList();
+            dep = DataBaseEntities.requests.Where(w => w.user.DepartmentId == userObj.DepartmentId || w.CopyId == Id  && w.Type == 2 && w.RegStatus && w.CreatedAt >= start && w.CreatedAt <= end).ToList();
 
             //retorno
             return dep;
@@ -156,10 +159,38 @@ namespace Data.Repository
         /// </summary>
         public requests Approve(requests req)
         {
+            //actualiza las respuestas 
+            if (req.questions != null)
+            {
+                foreach (var item in req.questions)
+                {
+                    var question = DataBaseEntities.questions.Where(w => w.questionId == item.questionId).FirstOrDefault();
+
+                    if (question != null)
+                    {
+                        question.Answer = string.IsNullOrEmpty(item.Answer) ? string.Empty : item.Answer;
+                        var questionUpdate = DataBaseEntities.Entry(question);
+                        questionUpdate.State = EntityState.Modified;
+                    }
+                }
+            }
+
+            //Actualiza la solicitud
             requests reqEntity = DataBaseEntities.requests.Where(w => w.RequestId == req.RequestId).FirstOrDefault();
 
             if (reqEntity != null)
             {
+                //si no es obligatorio puedo actualizar
+                if (reqEntity.LockAutorize != 2)
+                {
+                    reqEntity.AuthorizeId = req.AuthorizeId;                  
+                }
+
+                if (reqEntity.LockCopy != 2)
+                {
+                    reqEntity.CopyId = req.CopyId;
+                }
+
                 reqEntity.Type = 1;
 
                 var update = DataBaseEntities.Entry(reqEntity);

@@ -68,40 +68,19 @@
                     </table>
                 </div>
 
-                <div class="form-group col-xs-12 col-sm-12 col-md-2 col-lg-2 col-ls-2">
-                   
-                    <label for="LockAutorize">Acceso</label>
-                    <select class="form-control" id="LockAutorize" name="LockAutorize">
-                        <option value="0">Modificable</option>
-                        <option value="1">Opcional</option>
-                        <option value="2">Obligatorio</option>
-                    </select>
-                   
-                    <br />
-                   
-                    <label for="LockCopy">Acceso</label>
-                    <select class="form-control" id="LockCopy" name="LockCopy">
-                        <option value="0">Modificable</option>
-                        <option value="1">Opcional</option>
-                        <option value="2">Obligatorio</option>
-                    </select>
-                    <br />
-                </div>
+                <div class="form-group col-xs-12 col-sm-12 col-md-4 col-lg-4 col-ls-4">
+                    <label for="AuthorizeId">Autorizador</label>
+                    <div class="right-inner-addon">
+                        <select name="AuthorizeId" id="AuthorizeId" class="form-control"></select>
+                    </div>
 
-                <div class="form-group col-xs-12 col-sm-12 col-md-2 col-lg-2 col-ls-2">
-                    <div id="selectaut" style="height:60px">
-                        <label id="lblAuthorizeId" for="AuthorizeId">Autorizador</label>
-                        <div class="right-inner-addon">
-                            <select name="AuthorizeId" id="AuthorizeId" class="form-control"></select>
-                        </div>
-                    </div>
                     <br />
-                    <div id="selectcopia" style="height:60px">
-                        <label id="lblCopyId" for="CopyId">Copia</label>
-                        <div class="right-inner-addon">
-                            <select name="CopyId" id="CopyId" class="form-control"></select>
-                        </div>
+
+                    <label for="CopyId">Copia</label>
+                    <div class="right-inner-addon">
+                        <select name="CopyId" id="CopyId" class="form-control"></select>
                     </div>
+
                     <br />
                 </div>
             </div>
@@ -214,5 +193,5 @@
     @Scripts.Render("~/Content/daterangepicker/daterangepicker.js")
     @Scripts.Render("~/Content/bootstrap-select/dist/js/bootstrap-select.min.js")
     @Scripts.Render("~/Content/jsmethods/manager.js?version=" + Version)
-    @Scripts.Render("~/Content/jsmethods/jefe.js?version=" + Version)
+    @Scripts.Render("~/Content/jsmethods/solicitante.js?version=" + Version)
 }
